@@ -1,0 +1,24 @@
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo, monospace;
+  height: 100%;
+  width: 100%;  
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+@font-face {
+  font-family: "BigShouldersDisplay";   /*Can be any text*/
+  src: local("BigShouldersDisplay"), url("./fonts/BigShouldersDisplay-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "NunitoSans";   /*Can be any text*/
+  src: local("NunitoSans"), url("./fonts/NunitoSans-Light.ttf") format("truetype");
+}

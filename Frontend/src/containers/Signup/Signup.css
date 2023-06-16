@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+.loginContainer {
+  height: 100%;
+  width: 100%;
+  background: #000000;
+}
+
+.login_title {
+  color: #FFF;
+  opacity: 0.61;
+  width: fit-content;
+  letter-spacing: 0em;
+  --para-spacing: 0;
+  text-transform: none;
+  --head-indent: 0;
+  --numeric-list-marker: none;
+  list-style-type: none;
+}
+
+.login_title_header {
+  font-family: "BigShouldersDisplay";
+  font-weight: 700;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 100px;
+  display: block;
+  height: 115px;
+}
+
+.login_title_bottom {
+  color: rgb(217, 217, 217);
+  font-family: "NunitoSans";
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 12px;
+  display: block;
+  margin-left: auto;
+  width: fit-content;
+}
+
+.login_message {
+  color: #FFF;
+  opacity: 0.61;
+  width: fit-content;
+}
+
+.login_message_header {
+  font-family: "NunitoSans";
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 19px;
+  display: block;
+  letter-spacing: 0em;
+  --para-spacing: 0;
+  text-transform: none;
+  --head-indent: 0;
+  --numeric-list-marker: none;
+  list-style-type: none;
+}
+
+.login_message_bottom {
+  color: rgb(217, 217, 217);
+  font-family: "NunitoSans";
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  margin-left: auto;
+  width: fit-content;
+}
+
+.login_box {
+  color: rgb(217, 217, 217);
+  font-family: "NunitoSans";
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 14px;
+  margin-left: 50px;
+}
+
+.login_box label {
+  opacity: 0.9;
+  margin-left: 10px;
+}
+
+.login_box input {
+  color: black;
+  border-radius: 8px;
+  height: 35px;
+  width: 275px;
+  border-style: none;
+}
+
+.login_box button {
+  color: white;
+  border-radius: 8px;
+  width: 275px;  
+  height: 40px;
+  background: #545454;
+  margin-top: 15px;
+}
+
+.login-box {
+  width: 350px;
+  height: 380px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.33);
+  -moz-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.33);
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.33);
+}
+.signinButton {
+  width: fit-content !important;
+  height: fit-content !important;
+  background: #000 !important;
+}

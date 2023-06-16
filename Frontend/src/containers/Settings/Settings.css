@@ -1,0 +1,203 @@
+.settingsContainer {
+  height: 100%;
+  width: 100%;
+  background: #c4b7b7;
+  font-family: "NunitoSans";
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+}
+
+.inviteLinkBox {
+  color: black;  
+}
+
+.inviteLinkBox span {
+  color: white;
+  font-size: 25px;
+}
+
+.inviteLinkBox div {
+  margin-top: 35px;
+}
+
+.inviteLinkBox input {
+  font-size: 16px;
+  height: 35px;
+  width: calc(100% - 180px);
+  border-radius: 8px;
+  border-style: none;
+}
+
+.inviteLinkBox button {
+  font-size: 16px;
+  height: 40px;
+  width: 80px;
+  margin-left: 10px;
+  background: #545454;
+  border-radius: 8px;
+  color: rgb(217, 217, 217);
+}
+
+.thumbnailBox {
+  margin-top: 30px;  
+}
+
+.thumbnailBox span {
+  color: #d9d9d9;
+  font-size: 17px;
+  padding-top: 13px;
+  opacity: 0.8;
+}
+
+.thumbnailBox img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.thumbnailBox button {
+  font-size: 16px;
+  height: 40px;
+  width: 80px;
+  margin-left: 10px;
+  background: #545454;
+  border-radius: 8px;
+  color: rgb(217, 217, 217);
+}
+
+.fileInput {
+  margin-top: 30px;
+  background: white;
+  text-align: left;
+  width: calc(100% - 90px);
+  border-radius: 8px;
+}
+
+.fileInput > [type="file"] {
+  display: none;
+}
+
+.printfont{
+  color: #000;
+  margin-bottom: 0;
+}
+
+.fileInput > .button {
+  display: inline-block;
+  cursor: pointer;
+  background: #545454;
+  padding: 8px 16px;
+  border-radius: 2px;
+  margin-right: 8px;
+  color: rgb(217, 217, 217);
+  border-radius: 6px;
+}
+
+.fileInput > .label {
+  color: black;
+  white-space: nowrap;
+}
+
+#thumbLabel {
+  border: none;
+  width: calc(100% - 90px);
+}
+
+.inviteDiv {
+  display: inline;
+  position: relative;
+}
+
+.inviteDiv img {
+  position: absolute;
+  right: 0px;
+  width: 37px;
+  height: 37px;
+  padding: 5px;
+}
+
+#password {
+  width: 100%;
+}
+
+.encoderTitle {
+  color: white;
+  font-size: 25px;
+  margin-top: 50px;
+  display: block;
+}
+
+.encoderSetup {
+  color: black;  
+}
+
+.encoderSetup span {
+  opacity: 0.8;
+  color: #d9d9d9;
+  font-size: 17px;
+  margin-top: 30px;
+  display: block;
+}
+
+.encoderSetup input {
+  font-size: 16px;
+  height: 35px;
+  width: calc(100% - 90px);
+  border-radius: 8px;
+  border-style: none;  
+}
+
+.encoderSetup button {
+  font-size: 16px;
+  height: 40px;
+  width: 80px;
+  margin-left: 10px;
+  background: #545454;
+  border-radius: 8px;
+  color: rgb(217, 217, 217);
+}
+
+.projectTitle {  
+  color: white;
+  font-size: 25px;
+  display: block;
+}
+
+.detailBox span {
+  color: #d9d9d9;
+  opacity: 0.8;
+  font-size: 17px;
+  margin-top: 25px;
+  display: block;
+}
+
+.detailBox input {
+  font-size: 16px;
+  height: 35px;
+  width: 100%;
+  border-radius: 8px;
+  border-style: none;
+}
+
+.saveButton {
+  font-size: 16px;
+  height: 40px;
+  width: 100%;
+  margin-top: 50px;
+  border-radius: 8px;
+  border-style: none;
+  background: #545454;
+  color: rgb(217, 217, 217);
+}
+
+.overlay .ant-tooltip-inner {
+  color: #000;
+  background-color: #545454;
+}
+
+.overlay .ant-tooltip-arrow::before{
+  background-color: #545454;
+}
