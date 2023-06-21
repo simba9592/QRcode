@@ -13,7 +13,7 @@ const Signup = ({ signUpRequest, isAuth, history, status, companyName }) => {
       document.title = companyName;
     }   
     let link = document.querySelector("link[rel~='icon']");
-    link.href = "/assets/images/logo.png";
+    link.href = "/assets/images/QR.jfif";
   }, [companyName]);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const Signup = ({ signUpRequest, isAuth, history, status, companyName }) => {
         <Col span={4}>col-10</Col>
         <Col span={10} style={{ height: "100%" }}>
           <img
-            src="/assets/images/logo_black.png"
+            src="/assets/images/QR.jfif"
             style={{
               width: "100%",
               height: "100%",
