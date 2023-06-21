@@ -23,7 +23,6 @@ const Settings = ({
 
 
   const [qrcode, setQrCode] = useState();
-  const reportTemplateRef = useRef(null);
 
   function handleDownload() {
     const element = document.getElementById('my-div');
@@ -37,29 +36,6 @@ const Settings = ({
 
 
   }
-
-
-  // function handleDownload() {
-  // 	var htmlBody = '<div>helloWorld!djdjdj</div>';//
-  // 	var doc = new jsPDF();  //create jsPDF object
-  // 	doc.html(htmlBody, {
-  // 		callback: function (doc) {
-  // 		  doc.save();
-  // 		},
-  // 		x: 10,
-  // 		y: 10,
-  // 		filename: 'newPDF.pdf'
-  // 	});
-  // }
-
-  // useEffect(() => {
-  //   if (companyName) {
-  //     document.title = companyName;
-  //   }
-  //   let link = document.querySelector("link[rel~='icon']");
-  //   link.href = "/assets/images/logo.png";
-  // }, [companyName]);
-
 
   const [formdata, setFormData] = useState({
     customerid: "",
@@ -80,7 +56,7 @@ const Settings = ({
 
   const codeGenerate = () => {
     setQrCode(JSON.stringify(formdata));
-    sendDataToServer(formdata);
+    // sendDataToServer(formdata);
   }
 
   const sendDataToServer = async (data) => {

@@ -251,7 +251,7 @@ exports.sendScanData = async (req, res) => {
   });
 
   const scanData = await scandata.save();
-
+  
   try {
     if (!req.body) {
       res.send({

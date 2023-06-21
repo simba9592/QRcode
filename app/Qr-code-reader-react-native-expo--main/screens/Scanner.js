@@ -27,28 +27,28 @@ export default function Scanner() {
     setScanned(true);
     alert(`Invoice data : ${data}`);
     // console.log(JSON.parse(data));
-    // sendDataToServer(data);
+    sendDataToServer(data);
     // setScanData(JSON.parse(data))
 
   };
 
-  // const sendDataToServer = async (data) => {
-  //   console.log(data, "dddddddddddd");
-  //   try {
-  //     const response = await fetch('http://localhost:8080/api/test/scan_data', {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(data),
-  //     });
-  //     const responseJson = await response.json();
-  //     console.log(responseJson);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const sendDataToServer = async (data) => {
+    try {
+      const response = await fetch('http://10.10.13.101:8080/api/test/scan_data', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      });
+      
+      // console.log(response, "rrrrrrrrrr");
+    } catch (error) {
+      console.log("ok");
+      console.error(error);
+    }
+  };
 
   return (
     <View style={styles.container}>
