@@ -190,7 +190,7 @@ const Register = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="mb-2">
+                                                {/* <div className="mb-2">
                                                     <Col >
                                                         <div className="mb-3">
                                                             <Label htmlFor="choices-single-default" className="form-label text-muted">Role</Label>
@@ -203,7 +203,7 @@ const Register = () => {
                                                             />
                                                         </div>
                                                     </Col>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="mt-4">
                                                     <button className="btn btn-success w-100" type="submit">Sign Up</button>

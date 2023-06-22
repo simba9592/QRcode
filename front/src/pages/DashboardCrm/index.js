@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Modal, ModalHeader, Button } from 'reactstrap';
 import BreadCrumb from '../../Components/Common/BreadCrumb';
 import MetaTags from 'react-meta-tags';
@@ -14,6 +14,7 @@ import Section from '../DashboardEcommerce/Section';
 import { Link } from 'react-router-dom';
 import UserList from './Userlist';
 import { useSelector, useDispatch } from "react-redux";
+import ExcekCustomer from './ExcelCustomer';
 
 const DashboardCrm = () => {
 
@@ -41,19 +42,29 @@ const DashboardCrm = () => {
                 <Container fluid>
                     <BreadCrumb title="Admin" pageTitle="Dashboards" />
                     <Section />
-                    <div className="col-auto">
+                    {/* <div className="col-auto">
                         <button type="button" className="btn btn-soft-success shadow-none" onClick={() => tog_positionTopRight()}><i className="ri-add-circle-line align-middle me-1"></i> Add</button>
-                    </div>
+                    </div> */}
                     <Row>
-                        <MyTasks />
-                        <DealsStatus />
+                        <div className="live-preview">
+                            <div className="d-grid gap-2">
+                            <Link to="/apps-customer-data" className="btn btn-success">Customers</Link>
+                            <Link to="/apps-payments-data" className="btn btn-success">Payments</Link>
+                            <Link to="/apps-buildings-data" className="btn btn-success">Buildings</Link>
+
+                            
+                            </div>
+                        </div>
+                        {/* <ExcekCustomer /> */}
+                        {/* <MyTasks /> */}
+                        {/* <DealsStatus /> */}
                     </Row>
                     <Row>
-                        <ClosingDeals />
+                        {/* <ClosingDeals />
                         <UpcomingActivities />
-                        <UserList />
+                        <UserList /> */}
                     </Row>
-                  
+
                 </Container>
             </div>
 
@@ -63,7 +74,7 @@ const DashboardCrm = () => {
                     <Button type="button" className="btn-close" onClick={() => { setmodal_positionTopRight(false); }} aria-label="Close"> </Button>
                 </ModalHeader>
                 <div className="modal-body text-center p-5">
-                 
+
                     <div className="mt-4">
                         <h4 className="mb-3">Please Select the Management.</h4>
                         <p className="text-muted mb-4"> You can select the Airplane register, pilot register and report management .</p>
@@ -72,7 +83,7 @@ const DashboardCrm = () => {
                             <Link to="/apps-ecommerce-user-list" className="btn btn-success">Users</Link>
                             <Link to="/apps-report-list" className="btn btn-success">Report</Link>
                             <Link to="#" className="btn btn-link link-success fw-medium shadow-none" onClick={() => { tog_positionTopRight(); }}><i className="ri-close-line me-1 align-middle"></i> Close</Link>
-                    
+
                         </div>
                     </div>
                 </div>

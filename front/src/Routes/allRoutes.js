@@ -98,6 +98,11 @@ import UserList from "../pages/DashboardCrm/Userlist";
 import MyTasks from "../pages/DashboardCrm/MyTasks";
 import ClosingDeals from "../pages/DashboardCrm/ClosingDeals";
 import UpcomingActivities from '../pages/DashboardCrm/UpcomingActivities';
+import ExcelCustomer from '../pages/DashboardCrm/ExcelCustomer';
+import ExcelPayments from '../pages/DashboardCrm/ExcelPayments';
+import ExcelBuildings from "../pages/DashboardCrm/ExcelBuildings";
+import InvoiceStates from "../pages/DashboardAnalytics/InvoiceStates";
+import CollectionData from "../pages/DashboardAnalytics/CollectionData";
 
 const authProtectedRoutes = [
   { path: "/dashboard-owner", component: DashboardAnalytics },
@@ -106,6 +111,12 @@ const authProtectedRoutes = [
   { path: "/dashboard-aircraft", component: DashboardProject },
   { path: "/apps-calendar", component: Calendar },
   { path: "/apps-airplane-add", component: EcommerceProducts },
+  { path: "/apps-customer-data", component: ExcelCustomer },
+  { path: "/apps-payments-data", component: ExcelPayments },
+  { path: "/apps-buildings-data", component: ExcelBuildings },
+  { path: "/apps-invoice-states", component: InvoiceStates },
+  { path: "/apps-collection-data", component: CollectionData },
+
 
   { path: "/apps-ecommerce-sellers", component: EcommerceSellers },
   { path: "/apps-ecommerce-seller-details", component: EcommerceSellerDetail },

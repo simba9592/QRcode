@@ -1,0 +1,269 @@
+.settingsContainer {
+  height: 100%;
+  width: 100%;
+  background: #000000;
+  font-family: "NunitoSans";
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+}
+
+.userTitle {
+  color: white;
+  font-size: 25px;
+  display: block;
+}
+
+.companyTitle {
+  color: white;
+  font-size: 25px;
+  display: block;
+}
+
+.companyBox {
+  margin-top: 15px;
+}
+
+.companyBox span {
+  color: #d9d9d9;
+  font-size: 17px;
+  display: block;
+  opacity: 0.8;
+}
+
+.companyBox input {
+  color: black;
+  font-size: 16px;
+  height: 35px;
+  width: 100%;
+  border-radius: 8px;
+  border-style: none;
+}
+
+.thumbnailBox {
+  margin-top: 30px;
+}
+
+.thumbnailBox span {
+  color: #d9d9d9;
+  font-size: 17px;
+  padding-top: 13px;
+  opacity: 0.8;
+}
+
+.thumbnailBox img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.thumbnailBox button {
+  font-size: 16px;
+  height: 40px;
+  width: 80px;
+  margin-left: 10px;
+  background: #545454;
+  border-radius: 8px;
+  color: rgb(217, 217, 217);
+}
+
+.fileInput {
+  margin-top: 30px;
+  background: white;
+  text-align: left;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.fileInput > [type="file"] {
+  display: none;
+}
+
+.fileInput > .button {
+  display: inline-block;
+  cursor: pointer;
+  background: #545454;
+  padding: 8px 16px;
+  border-radius: 2px;
+  margin-right: 8px;
+  color: rgb(217, 217, 217);
+  border-radius: 6px;
+}
+
+.fileInput > .label {
+  color: black;
+  white-space: nowrap;
+}
+
+.customLinkTitleBox {
+  margin-top: 30px;
+}
+
+.customLinkTitleBox span {
+  color: #d9d9d9;
+  font-size: 17px;
+  display: block;
+  opacity: 0.8;
+}
+
+.customLinkTitleBox input {
+  color: black;
+  font-size: 16px;
+  height: 35px;
+  width: 100%;
+  border-radius: 8px;
+  border-style: none;
+}
+
+.saveButton {
+  font-size: 16px;
+  height: 40px;
+  width: 100%;
+  margin-top: 30px;
+  border-radius: 8px;
+  border-style: none;
+  background: #545454;
+  color: rgb(217, 217, 217);
+}
+
+.logoutButton {
+  font-size: 16px;
+  height: 40px;
+  width: 100%;
+  margin-top: 30px;
+  border-radius: 8px;
+  border-style: none;
+  background: #545454;
+  color: rgb(217, 217, 217);
+}
+
+.overlay .ant-tooltip-inner {
+  color: #000;
+  background-color: #545454;
+}
+
+.overlay .ant-tooltip-arrow::before {
+  background-color: #545454;
+}
+
+.customTable .ant-table-tbody .ant-table-row:nth-child(even) {
+  background-color: #000;
+}
+
+.customTable .ant-table-thead > tr > th,
+.ant-table-footer,
+.ant-table-placeholder,
+.ant-empty-normal,
+.ant-table-tbody {
+  background: #000;
+  color: rgba(217, 217, 217, 0.85);
+}
+
+.customTable .ant-table-tbody > tr.ant-table-row:hover > td {
+  background: #545454 !important;
+}
+
+.customTable .ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link,
+.ant-pagination-item,
+.ant-pagination-item-active {
+  background: #545454 !important;
+  color: rgb(217, 217, 217);
+}
+
+.customTable .checkbox {
+  background: #000;
+}
+
+.customTable .checkbox:checked {
+  background: #000;
+}
+
+.admin_checkbox {
+  display: block;
+}
+
+.admin_checkbox input {
+  padding: 0;
+  height: initial;
+  width: initial;
+  margin-bottom: 0;
+  display: none;
+  cursor: pointer;
+}
+
+.admin_checkbox label {
+  position: relative;
+  cursor: pointer;
+}
+
+.admin_checkbox label:before {
+  content: "";
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid lightgray;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.admin_checkbox input:checked + label:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 2px;
+  left: 9px;
+  width: 6px;
+  height: 14px;
+  border: solid lightgray;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.newUserBox {
+  display: inline-block;
+}
+
+.newUserBox input {
+  color: black;
+  font-size: 16px;
+  height: 35px;
+  border-radius: 8px;
+  border-style: none;
+  margin-left: 10px;
+}
+
+.newUserBox :first-child {
+  margin-left: 0px;
+}
+
+.new_user_add {
+  font-size: 16px;
+  height: 40px;
+  width: 80px;
+  margin-left: 10px;
+  background: #545454;
+  border-radius: 8px;
+  color: rgb(217, 217, 217);
+  display: inline-block;
+}
+
+.ant-popover-inner-content {
+  background: #545454;
+}
+
+.ant-popover-message {
+  color: rgb(217, 217, 217);
+}
+
+.ant-popover-placement-top > .ant-popover-content > .ant-popover-arrow, .ant-popover-placement-topLeft > .ant-popover-content > .ant-popover-arrow, .ant-popover-placement-topRight > .ant-popover-content > .ant-popover-arrow {
+  border-right-color: #545454;
+  border-bottom-color: #545454;
+}

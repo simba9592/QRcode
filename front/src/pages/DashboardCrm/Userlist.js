@@ -34,7 +34,7 @@ const UserList = () => {
                                         <th scope="col" style={{ width: "20%" }}>User Name</th>
                                         <th scope="col" style={{ width: "30%" }}>User Email</th>
                                         <th scope="col" style={{ width: "20%" }}>User Password</th>
-                                        <th scope="col" style={{ width: "20%" }}>User Role</th>
+                                        {/* <th scope="col" style={{ width: "20%" }}>User Role</th> */}
                                         {/* <th scope="col" >permit</th> */}
                                     </tr>
                                 </thead>
@@ -46,7 +46,7 @@ const UserList = () => {
                                             <td>{item.username}</td>
                                             <td>{item.email}</td>
                                             <td>${item.password}K</td>
-                                            <td>{item.roles}</td>
+                                            {/* <td>{item.roles}</td> */}
                                             {/* <td>
                                             <div className="form-check form-switch form-switch-custom form-switch-primary mb-3">
                                                         <Input className="form-check-input" type="checkbox" role="switch" id={item._id} />

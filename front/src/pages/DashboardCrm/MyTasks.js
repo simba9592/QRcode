@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAllAirplane } from "../../store/actions";
 import { useEffect } from 'react';
 import URLname from "../../common/const"
+import { readFile } from 'xlsx';
 //SimpleBar
 import SimpleBar from "simplebar-react";
 
@@ -26,7 +27,7 @@ const MyTasks = () => {
 
     return (
         <React.Fragment>
-            <Col xl={5}>
+            <Col xl={12}>
                 <Card>
                     <CardHeader className="align-items-center d-flex">
                         <h4 className="card-title mb-0 flex-grow-1">Airplane</h4>
