@@ -103,6 +103,8 @@ import ExcelPayments from '../pages/DashboardCrm/ExcelPayments';
 import ExcelBuildings from "../pages/DashboardCrm/ExcelBuildings";
 import InvoiceStates from "../pages/DashboardAnalytics/InvoiceStates";
 import CollectionData from "../pages/DashboardAnalytics/CollectionData";
+import PaidSubscription from "../pages/DashboardCrm/PaidSubscription";
+import Invoice from "../pages/DashboardEcommerce/StoreVisits";
 
 const authProtectedRoutes = [
   { path: "/dashboard-owner", component: DashboardAnalytics },
@@ -116,6 +118,8 @@ const authProtectedRoutes = [
   { path: "/apps-buildings-data", component: ExcelBuildings },
   { path: "/apps-invoice-states", component: InvoiceStates },
   { path: "/apps-collection-data", component: CollectionData },
+  { path: "/apps-paidsubscription", component: PaidSubscription },
+  { path: "/apps-invoice", component: Invoice},
 
 
   { path: "/apps-ecommerce-sellers", component: EcommerceSellers },

@@ -64,6 +64,30 @@ import getAirplaneProflieData from "./airplaneprofile/reducer";
 //airplane list
 import getAllAirplaneReducer from "./airplanelist/reducer";
 
+//customers
+import sendCustomersDetails from "./customers/reducer";
+
+//payments
+import sendPaymentsDetails from "./payments/reducer";
+
+//buildings
+import sendBuildingsDetails from "./buildings/reducer";
+
+//get customers
+import getCustomersDetails from "./getcustomers/reducer";
+
+//get payment
+import getPaymentsDetails from "./getpayment/reducer";
+
+//get building
+import getBuildingDetails from "./getbuildings/reducer";
+
+//send invoice data
+import sendInvoiceDetails from "./sendinvoice/reducer";
+
+//get one invoice
+import getOneInvoiceReducer from "./ownerprofile/reducer";
+
 const rootReducer = combineReducers({
     // public
     Layout,
@@ -91,6 +115,14 @@ const rootReducer = combineReducers({
     getAllPilotReducer,
     getAirplaneProflieData,
     getAllAirplaneReducer,
+    sendCustomersDetails,
+    sendPaymentsDetails,
+    sendBuildingsDetails,
+    getCustomersDetails,
+    getPaymentsDetails,
+    getBuildingDetails,
+    sendInvoiceDetails,
+    getOneInvoiceReducer,
 });
 
 export default rootReducer;

@@ -32,7 +32,27 @@ module.exports = function(app) {
 
   app.post("/api/test/send_report_data", controller.sendReport )
 
+  app.post("/api/test/send_customers_data", controller.sendCustomers )
+
+  app.post("/api/test/send_payments_data", controller.sendPayments )
+
+  app.post("/api/test/send_buildings_data", controller.sendBuildings )
+
+  app.post("/api/test/paidsubscription", controller.paidSubscription )
+
+  app.post("/api/test/region_monthlyfee_fix", controller.fixregionmonthlyfee )
+
+  app.post("/api/test/person_monthlyfee_fix", controller.fixpersonmonthlyfee )
+
   app.post("/api/test/get-all-user", controller.getAllUser )
+
+  app.post("/api/test/get_customers_data", controller.getCustomers )
+
+  app.post("/api/test/getpaid", controller.getPaid )
+
+  app.post("/api/test/get_payments_data", controller.getPayments )
+
+  app.post("/api/test/get_building_data", controller.getBuilding )
 
   app.post("/api/test/get-all-owner", controller.getAllOnwer )
 
@@ -42,9 +62,17 @@ module.exports = function(app) {
 
   app.post("/api/test/invoice_data", controller.getAllInvoice )
 
+  app.post("/api/test/get_invoice_number", controller.getInvoiceNum )
+
+  app.post("/api/test/get_filters", controller.getFilters )
+
   app.post("/api/test/receive_report_data", controller.receiveReportData )
 
   app.get("/api/test/send_report_data/:id", controller.sendReportData )
+
+  app.post("/api/test/send_invoice_data", controller.saveInvoiceData )
+
+  app.post("/api/test/init_invoice_data", controller.initInvoiceData )
 
   app.post("/api/test/owner-profile", uploadUserAvatar.single('file'), controller.createOwnerProfile )
 

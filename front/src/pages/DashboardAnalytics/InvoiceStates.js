@@ -100,67 +100,78 @@ const InvoiceStates = ({
         <Col span={4}></Col>
         <Col span={12} style={{ paddingTop: "250px", }}>
 
-          <div id="my-div" style={{ display: "flex", width: "fit-content", borderTop:"2px dotted black", borderBottom:"2px dotted black" }}>
-            <div style={{marginTop:"20px", paddingLeft:"20px"}}><h4><b>Collector Part</b></h4>
-              <QRCode value={qrcode} level="H" style={{ width: '100px', height: '100px', marginLeft:"10px" }} />
-              <div style={{display:"flex", paddingTop:"10px"}}>
+          <div id="my-div" style={{ display: "flex", width: "fit-content", borderTop: "2px dotted black", borderBottom: "2px dotted black" }}>
+            <div style={{ marginTop: "20px", paddingLeft: "20px" }}><h4><b>Collector Part</b></h4>
+              <QRCode value={qrcode} level="H" style={{ width: '100px', height: '100px', marginLeft: "10px" }} />
+              <div style={{ display: "flex", paddingTop: "10px" }}>
                 <p className="printfont" style={{ fontSize: "10px" }}><b>monthly fee</b></p >
-                <p className="printfont" style={{ fontSize: "10px", marginLeft:"20px"}}>{formdata.monthlyfee}</p >
+                <p className="printfont" style={{ fontSize: "10px", marginLeft: "20px" }}>{formdata.monthlyfee}</p >
               </div>
             </div>
 
-            <div style={{ display: "flex",paddingTop:"20px", flexDirection: "column", borderRight: " 2px dotted black", marginLeft: "30px", paddingRight: "30px" }}>
+            <div style={{ display: "flex", paddingTop: "20px", flexDirection: "column", borderRight: " 2px dotted black", marginLeft: "30px", paddingRight: "30px" }}>
 
               <p className="printfont" style={{ fontSize: "10px" }}><b>ID</b></p >
-              <p  style={{ fontSize: "10px" }} >{formdata.customerid}</p>
+              <p style={{ fontSize: "10px" }} >{formdata.customerid}</p>
               <p className="printfont" style={{ fontSize: "10px" }}><b>Name</b></p >
-              <p  style={{ fontSize: "10px" }}>{formdata.fullname}</p >
+              <p style={{ fontSize: "10px" }}>{formdata.fullname}</p >
               <p className="printfont" style={{ fontSize: "10px" }}><b>Address</b></p >
-              <p  style={{ fontSize: "10px" }}>{formdata.address}</p >
+              <p style={{ fontSize: "10px" }}>{formdata.address}</p >
 
               <p className="printfont" style={{ fontSize: "10px" }}><b>date</b></p >
-              <p  style={{ fontSize: "10px" }}>{formdata.date}</p >
+              <p style={{ fontSize: "10px" }}>{formdata.date}</p >
             </div>
 
             {/* <QRCode value={qrcode} level="H" style={{ width: '200px', height: '200px' }} /> */}
-            <div style={{ display: "flex",paddingTop:"20px", flexDirection: "column", paddingRight: "10px", paddingLeft: "10px" }}>
+            <div style={{ display: "flex", paddingTop: "20px", flexDirection: "column", paddingRight: "10px", paddingLeft: "10px" }}>
               <h4><b>Customer part</b></h4>
 
 
               <p className="printfont" style={{ fontSize: "10px" }}><b>ID</b></p >
-              <p  style={{ fontSize: "10px" }} >{formdata.customerid}</p>
+              <p style={{ fontSize: "10px" }} >{formdata.customerid}</p>
               <p className="printfont" style={{ fontSize: "10px" }}><b>Name</b></p >
-              <p  style={{ fontSize: "10px" }}>{formdata.fullname}</p >
+              <p style={{ fontSize: "10px" }}>{formdata.fullname}</p >
               <p className="printfont" style={{ fontSize: "10px" }}><b>Address</b></p >
-              <p  style={{ fontSize: "10px" }}>{formdata.address}</p >
+              <p style={{ fontSize: "10px" }}>{formdata.address}</p >
               <p className="printfont" style={{ fontSize: "10px" }}><b>monthly fee</b></p >
-              <p  style={{ fontSize: "10px" }}>{formdata.monthlyfee}</p >
+              <p style={{ fontSize: "10px" }}>{formdata.monthlyfee}</p >
               <p className="printfont" style={{ fontSize: "10px" }}><b>date</b></p >
-              <p  style={{ fontSize: "10px" }}>{formdata.date}</p >
+              <p style={{ fontSize: "10px" }}>{formdata.date}</p >
             </div>
 
 
             {/* <QRCode value={qrcode} level="H" style={{ width: '200px', height: '200px' }} /> */}
           </div>
         </Col>
-        <Col span={4}></Col>
-      </Row>
 
-      <Col span={15}></Col>
-      <Col span={3} style={{ padding: "10px" }}>
-        <button className="logoutButton" onClick={handleDownload}>
-          Print
-        </button>
-      </Col>
-      <Col span={3} style={{ padding: "10px" }}>
-        <div >
-          <Link to="/apps-collection-data">
-            <button className="logoutButton" >
-              Next Page
-            </button>
-          </Link>
-        </div>
-      </Col>
+      </Row>
+      <Row>
+        <Col md={12}></Col>
+        <Col md={4} style={{ padding: "10px" }}>
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={() => {
+              handleDownload();
+            }}
+          >
+            Print
+          </button>
+
+        </Col>
+        <Col md={4} style={{ padding: "10px" }}>
+          <div >
+            <Link to="/apps-collection-data">
+              <button
+                type="button"
+                className="btn btn-success"
+              >
+                Next Page
+              </button>
+            </Link>
+          </div>
+        </Col>
+      </Row>
 
     </div>
   );

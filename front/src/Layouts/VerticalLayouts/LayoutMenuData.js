@@ -70,20 +70,26 @@ const Navdata = () => {
                 },
                 {
                     id: "crm",
-                    label: "Invoice State",
+                    label: "Create Invoice",
                     link: "/apps-invoice-states",
                     parentId: "dashboard",
                 },
                 {
                     id: "ecommerce",
                     label: "Setting",
-                    link: "/apps-ecommerce-user-list",
+                    link: "/apps-create-report",
+                    parentId: "dashboard",
+                },
+                {
+                    id: "ecommerce",
+                    label: "invoice",
+                    link: "/apps-invoices-create",
                     parentId: "dashboard",
                 },
                 {
                     id: "ecommerce",
                     label: "Unpaid Subscription",
-                    link: "/apps-ecommerce-user-list",
+                    link: "/apps-paidsubscription",
                     parentId: "dashboard",
                 },
                 {
@@ -95,76 +101,8 @@ const Navdata = () => {
 
             ],
         },
-        // {
-        //     id: "apps",
-        //     label: "Dashboard",
-        //     icon: "ri-apps-2-line",
-        //     link: "/dashboard-admin",
-        //     click: function (e) {
-        //         e.preventDefault();
-        //         setIsApps(!isApps);
-        //         setIscurrentState('Apps');
-        //         updateIconSidebar(e);
-        //     },
-        //     stateVariables: isApps,
-        //     subItems: [
-        //         {
-        //             id: "invoices",
-        //             label: "Administrator",
-        //             link: "/dashboard-admin",
-        //             isChildItem: true,
-        //             click: function (e) {
-        //                 e.preventDefault();
-        //                 setIsInvoices(!isInvoices);
-        //             },
-        //             parentId: "apps",
-        //             stateVariables: isInvoices,
-        //             childItems: [
-        //                 { id: 1, label: "Owner Profile", link: "/apps-aircraft-register" },
-        //                 { id: 2, label: "List of Users", link: "/apps-ecommerce-user-list" },
-        //                 { id: 3, label: "Report Management", link: "/apps-report-management" },
-
-        //             ]
-        //         },
-        //         {
-        //             id: "appsecommerce",
-        //             label: "Pilot",
-        //             link: "/#",
-        //             isChildItem: true,
-        //             click: function (e) {
-        //                 e.preventDefault();
-        //                 setIsEcommerce(!isEcommerce);
-        //             },
-        //             parentId: "apps",
-        //             stateVariables: isEcommerce,
-        //             childItems: [
-        //                 { id: 1, label: "List of Airplane", link: "/apps-airplane-list", parentId: "apps" },
-        //                 { id: 2, label: "Profile", link: "/pages-profile", parentId: "apps" },
-        //                 { id: 8, label: "Create Report", link: "/apps-create-report", parentId: "apps" },
-        //             ]
-        //         },
-        //         {
-        //             id: "appsprojects",
-        //             label: "Owner",
-        //             link: "/#",
-        //             isChildItem: true,
-        //             click: function (e) {
-        //                 e.preventDefault();
-        //                 setIsProjects(!isProjects);
-        //             },
-        //             parentId: "apps",
-        //             stateVariables: isProjects,
-        //             childItems: [
-        //                 { id: 1, label: "Pilot List", link: "/apps-pilot-list", parentId: "apps", },
-        //                 { id: 2, label: "Owner profile", link: "/apps-aircraft-register", parentId: "apps", },
-        //                 { id: 3, label: "Report Management", link: "/apps-report-management", parentId: "apps", },
-        //             ]
-        //         },
-        //     ],
-        // },
+    
     ];
-
-
     
         return <React.Fragment>{menuItems}</React.Fragment>;
  

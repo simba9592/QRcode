@@ -54,6 +54,9 @@ export const postJwtProfile = data => api.create(url.POST_EDIT_JWT_PROFILE, data
 
 export const postFakeProfile = data => api.create(url.POST_EDIT_PROFILE, data);
 
+//customers
+
+
 
 
 // Register Method
@@ -127,6 +130,38 @@ export const postSendReportData = (url, data) => {
   return api.create(url, data);
 }
 
+export const postSendCustomersData = (url, data) => {
+  return api.create(url, data);
+}
+
+export const postSendPaymentsData = (url, data) => {
+  return api.create(url, data);
+}
+
+export const postSendBuildingsData = (url, data) => {
+  return api.create(url, data);
+}
+
+export const postGetCustomersData = (url, data) => {
+  return api.create(url, data);
+}
+
+export const postGetPaymentsData = (url, data) => {
+  return api.create(url, data);
+}
+
+export const postGetBuildingData = (url, data) => {
+  return api.create(url, data);
+}
+
+export const postGetOneInvoice = (url, data) => {
+  return api.create(url, data);
+}
+
+
+export const sendInvoiceData = (url, data) => {
+  return api.create(url, data);
+}
 // postForgetPwd
 export const postJwtForgetPwd = data => api.create(url.POST_FAKE_JWT_PASSWORD_FORGET, data);
 

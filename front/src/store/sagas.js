@@ -70,6 +70,30 @@ import AirplaneProfileSage from "./airplaneprofile/saga";
 //airplane list
 import AirplaneListSaga from "./airplanelist/saga";
 
+//customers
+import sendCustomersSaga from "./customers/saga";
+
+//payments
+import sendPaymentsSaga from "./payments/saga";
+
+//buildings
+import sendBuildingsSaga from "./buildings/saga";
+
+//get customers
+import getCustomersSaga from "./getcustomers/saga";
+
+//get payment
+import getPaymentsSaga from "./getpayment/saga";
+
+//get building
+import getBuildingSaga from "./getbuildings/saga";
+
+//send Invoice data
+import sendInvoiceSaga from "./sendinvoice/saga";
+
+//get one invoice
+import getOneInvoiceSaga from "./initinvoice/saga";
+
 
 export default function* rootSaga() {
   yield all([
@@ -98,5 +122,13 @@ export default function* rootSaga() {
     fork(PilotListSaga),
     fork(AirplaneProfileSage),
     fork(AirplaneListSaga),
+    fork(sendCustomersSaga),
+    fork(sendPaymentsSaga),
+    fork(sendBuildingsSaga),
+    fork(getCustomersSaga),
+    fork(getPaymentsSaga),
+    fork(getBuildingSaga),
+    fork(sendInvoiceSaga),
+    fork(getOneInvoiceSaga),
   ]);
 }

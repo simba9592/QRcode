@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   CardBody,
@@ -18,64 +18,216 @@ import BreadCrumb from "../../Components/Common/BreadCrumb";
 import MetaTags from 'react-meta-tags';
 import Select from "react-select";
 
-import logoDark from "../../assets/images/logo-dark.png";
+import logoDark from "../../assets/images/qrcode.jfif";
 import logoLight from "../../assets/images/logo-light.png";
 import { useSelector, useDispatch } from "react-redux";
+import { sendInvoice } from "../../store/actions";
+import { getOneInvoice } from "../../store/actions";
+
+import {
+
+  Modal,
+  ModalFooter,
+  ModalHeader,
+  ModalBody,
+} from "reactstrap";
 
 const InvoiceCreate = () => {
-  const [ispaymentDetails, setispaymentDetails] = useState(null);
-  const [isStatus, setisStatus] = useState(null);
-  const [isCurrency, setisCurrency] = useState("$");
+  const [regionvalue, setisRegion] = useState();
+  const [monthvalue, setisMonth] = useState();
+  const [yearvalue, setisYear] = useState();
+  const [invoicenumber, setInvoiceNumber] = useState(1);
+  const [setdate, setDate] = useState('');
+  const dispatch = useDispatch();
+  const [defaultCounter, setdefaultCounter] = useState(1);
+  const [invoicenum, setInvoiceNum] = useState();
+  const [isChecked, setIsChecked] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [qrcodedata, setQrcodeData] = useState();
 
-  function handleispaymentDetails(ispaymentDetails) {
-    setispaymentDetails(ispaymentDetails);
+  const togglemodal = () => {
+    getCustomerID();
+    setModal(!modal);
+  };
+
+  const getCustomerID = async () => {
+    const getfilters = { monthvalue, yearvalue };
+    try {
+      const response = await fetch('http://localhost:8080/api/test/get_filters', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(getfilters),
+      });
+      const responseJson = await response.json();
+      setQrcodeData(responseJson);
+    } catch (error) {
+      console.error(error);
+    }
+  }; 
+
+
+
+  function countUP(id, invoicenumber) {
+    if (invoicenumber < invoicenum) {
+      id(invoicenumber + 1);
+      invoicenumber = invoicenumber + 1;
+      initInvoice({ invoicenumber });
+
+      // initInvoice({invoicenumber});
+    }
+    else
+      invoicenumber = invoicenum;
   }
 
-  function handleisCurrency(isCurrency) {
-    setisCurrency(isCurrency);
+  function countDown(id, invoicenumber) {
+    if (invoicenumber > 1) {
+      id(invoicenumber - 1);
+      invoicenumber = invoicenumber - 1;
+      initInvoice({ invoicenumber });
+    }
+    else
+      invoicenumber = 1;
+    // initInvoice({invoicenumber});
   }
 
-  const paymentdetails = [
+  function countFullDown(id, invoicenumber) {
+
+    id(invoicenumber - (invoicenumber - 1));
+    invoicenumber = 1;
+    initInvoice({ invoicenumber });
+
+  }
+
+  function countFullUP(id, invoicenumber) {
+    id(invoicenumber + (invoicenum - invoicenumber));
+    invoicenumber = invoicenumber + (invoicenum - invoicenumber);
+    initInvoice({ invoicenumber });
+  }
+
+  const region = [
     {
       options: [
-        { label: "Payment Method", value: "Payment Method" },
-        { label: "Mastercard", value: "Mastercard" },
-        { label: "Credit Card", value: "Credit Card" },
-        { label: "Visa", value: "Visa" },
-        { label: "Paypal", value: "Paypal" },
+        { label: "عمشيت", value: "عمشيت" },
+        { label: "ساحل علما", value: "ساحل علما" },
       ],
     },
   ];
 
-  const allstatus = [
+  const month = [
     {
       options: [
-        { label: "Select Payment Status", value: "Select Payment Status" },
-        { label: "Paid", value: "Paid" },
-        { label: "Unpaid", value: "Unpaid" },
-        { label: "Refund", value: "Refund" },
+        { label: "Jnuary", value: "1" },
+        { label: "February", value: "2" },
+        { label: "March", value: "3" },
+        { label: "April", value: "4" },
+        { label: "May", value: "5" },
+        { label: "June", value: "6" },
+        { label: "July", value: "7" },
+        { label: "August", value: "8" },
+        { label: "September", value: "9" },
+        { label: "October", value: "10" },
+        { label: "November", value: "11" },
+        { label: "December", value: "12" },
+
       ],
     },
   ];
 
-  function handleisStatus(isStatus) {
-    setisStatus(isStatus);
+  const year = [
+    {
+      options: [
+        { label: "2021", value: "2021" },
+        { label: "2022", value: "2022" },
+        { label: "2023", value: "2023" },
+        { label: "2024", value: "2024" },
+      ],
+    },
+  ];
+
+  function handleisRegion(regionvalue) {
+    setisRegion(regionvalue);
   }
 
-  const allcurrency = [
-    {
-      options: [
-        { label: "$", value: "($)" },
-        { label: "£", value: "(£)" },
-        { label: "₹", value: "(₹)" },
-        { label: "€", value: "(€)" },
-      ],
-    },
-  ];
+  function handleisMonth(monthvalue) {
+    setisMonth(monthvalue);
+  }
+
+  function handleisYear(yearvalue) {
+    setisYear(yearvalue);
+  }
+
+  const setSendInvoice = () => {
+    const data = { monthvalue, yearvalue, regionvalue, invoicenumber, setdate };
+    console.log(data);
+    dispatch(sendInvoice(data));
+  }
+
+  const setInitInvoice = () => {
+    setisMonth("");
+    setisRegion("");
+    setisYear("");
+    setDate("");
+    console.log(invoicenum);
+    setInvoiceNumber(invoicenum + 1);
+    setIsChecked(false);
+  }
+
+  const initInvoice = async (data) => {
+    try {
+      console.log("number", data);
+      const response = await fetch('http://localhost:8080/api/test/init_invoice_data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const fag = true
+      const responseJson = await response.json();
+      console.log(responseJson);
+      setisRegion(responseJson.regionvalue);
+      setisMonth(responseJson.monthvalue);
+      setisYear(responseJson.yearvalue);
+      const dateobj = new Date(responseJson.setdate);
+      console.log(dateobj)
+      setIsChecked(fag);
+      setDate(dateobj.toISOString().substring(0, 10))
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getInvoiceNumber = async (data) => {
+    try {
+      const response = await fetch('http://localhost:8080/api/test/get_invoice_number', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const invoice_number = await response.json();
+      console.log(invoice_number.length);
+      setInvoiceNum(invoice_number.length)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  useEffect(() => {
+
+    initInvoice({ invoicenumber });
+    getInvoiceNumber({ "data": "data" });
+
+  }, [])
 
 
 
-  document.title = "Create Invoice | Velzon - React Admin & Dashboard Template";
+  document.title = "Create Invoice";
   return (
     <div className="page-content">
 
@@ -104,572 +256,222 @@ const InvoiceCreate = () => {
                               className="card-logo card-logo-dark user-profile-image img-fluid"
                               alt="logo dark"
                             />
-                            <img
-                              src={logoLight}
-                              className="card-logo card-logo-light user-profile-image img-fluid"
-                              alt="logo light"
-                            />
+
                           </span>
                         </Label>
-                      </div>
-                      <div>
-                        <div>
-                          <Label for="companyAddress">Address</Label>
-                        </div>
-                        <div className="mb-2">
-                          <Input
-                            type="textarea"
-                            className="form-control bg-light border-0"
-                            id="companyAddress"
-                            rows="3"
-                            placeholder="Company Address"
-                          ></Input>
-                          <div className="invalid-feedback">
-                            Please enter a address
-                          </div>
-                        </div>
-                        <div>
-                          <Input
-                            type="text"
-                            className="form-control bg-light border-0"
-                            id="companyaddpostalcode"
-                            minLength="5"
-                            maxLength="6"
-                            placeholder="Enter Postal Code"
-                          />
-                          <div className="invalid-feedback">
-                            The US zip code must contain 5 digits, Ex. 45678
-                          </div>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col lg={4} className="ms-auto">
-                      <div className="mb-2">
-                        <Input
-                          type="text"
-                          className="form-control bg-light border-0"
-                          id="registrationNumber"
-                          maxLength="12"
-                          placeholder="Legal Registration No"
-                        />
-                        <div className="invalid-feedback">
-                          Please enter a registration no, Ex., 012345678912
-                        </div>
-                      </div>
-                      <div className="mb-2">
-                        <Input
-                          type="email"
-                          className="form-control bg-light border-0"
-                          id="companyEmail"
-                          placeholder="Email Address"
-                        />
-                        <div className="invalid-feedback">
-                          Please enter a valid email, Ex., example@gamil.com
-                        </div>
-                      </div>
-                      <div className="mb-2">
-                        <Input
-                          type="text"
-                          className="form-control bg-light border-0"
-                          id="companyWebsite"
-                          placeholder="Website"
-                        />
-                        <div className="invalid-feedback">
-                          Please enter a website, Ex., www.example.com
-                        </div>
-                      </div>
-                      <div>
-                        <Input
-                          type="text"
-                          className="form-control bg-light border-0"
-                          data-plugin="cleave-phone"
-                          id="compnayContactno"
-                          placeholder="Contact No"
-                        />
-                        <div className="invalid-feedback">
-                          Please enter a contact number
-                        </div>
                       </div>
                     </Col>
                   </Row>
                 </CardBody>
                 <CardBody className="p-4">
                   <Row className="g-3">
-                    <Col lg={3} sm={6}>
+                    <Col lg={4} sm={6}>
                       <Label for="invoicenoInput">Invoice No</Label>
                       <Input
-                        type="text"
+                        type="number"
                         className="form-control bg-light border-0"
                         id="invoicenoInput"
-                        placeholder="Invoice No"
-                        defaultValue="#VL25000355"
+                        name="invoicenumber"
+                        value={invoicenumber}
+                        onChange={(e) => {
+                          setInvoiceNumber(e.target.value);
+                        }}
                       />
                     </Col>
-                    <Col lg={3} sm={6}>
+                    <Col lg={4} sm={6}>
                       <div>
                         <Label for="date-field">Date</Label>
                         <Input
-                          type="text"
+                          type="date"
                           className="form-control bg-light border-0"
                           id="date-field"
                           data-provider="flatpickr"
                           data-time="true"
                           placeholder="Select Date-time"
-                        />
-                      </div>
-                    </Col>
-                    <Col lg={3} sm={6}>
-                      <Label for="choices-payment-status">Payment Status</Label>
-                      <div className="input-light">
-                        <Select
-                          className="bg-light border-0"
-                          value={isStatus}
-                          onChange={() => {
-                            handleisStatus();
+                          name="setdate"
+                          value={setdate}
+                          onChange={(e) => {
+                            setDate(e.target.value);
                           }}
-                          options={allstatus}
-                          id="choices-payment-status"
-                        ></Select>
-                      </div>
-                    </Col>
-                    <Col lg={3} sm={6}>
-                      <div>
-                        <Label for="totalamountInput">Total Amount</Label>
-                        <Input
-                          type="text"
-                          className="form-control bg-light border-0"
-                          id="totalamountInput"
-                          placeholder="$0.00"
                         />
                       </div>
                     </Col>
-                  </Row>
-                </CardBody>
-                <CardBody className="p-4 border-top border-top-dashed">
-                  <Row>
-                    <Col lg={4} sm={6}>
-                      <div>
-                        <Label
-                          for="billingName"
-                          className="text-muted text-uppercase fw-semibold"
-                        >
-                          Billing Address
-                        </Label>
-                      </div>
-                      <div className="mb-2">
-                        <Input
-                          type="text"
-                          className="form-control bg-light border-0"
-                          id="billingName"
-                          placeholder="Full Name"
-                        />
-                        <div className="invalid-feedback">
-                          Please enter a full name
-                        </div>
-                      </div>
-                      <div className="mb-2">
-                        <Input
-                          type="textarea"
-                          className="form-control bg-light border-0"
-                          id="billingAddress"
-                          rows="3"
-                          placeholder="Address"
-                          defaultValue=""
-                        ></Input>
-                        <div className="invalid-feedback">
-                          Please enter a address
-                        </div>
-                      </div>
-                      <div className="mb-2">
-                        <Input
-                          type="text"
-                          className="form-control bg-light border-0"
-                          data-plugin="cleave-phone"
-                          id="billingPhoneno"
-                          placeholder="(123)456-7890"
-                        />
-                        <div className="invalid-feedback">
-                          Please enter a phone number
-                        </div>
-                      </div>
-                      <div className="mb-3">
-                        <Input
-                          type="text"
-                          className="form-control bg-light border-0"
-                          id="billingTaxno"
-                          placeholder="Tax Number"
-                        />
-                        <div className="invalid-feedback">
-                          Please enter a tax number
-                        </div>
-                      </div>
-                      <div className="form-check">
-                        <Input
-                          type="checkbox"
-                          className="form-check-input"
-                          id="same"
-                          name="same"
-                        />
-                        <Label className="form-check-label" for="same">
-                          Will your Billing and Shipping address same?
-                        </Label>
-                      </div>
-                    </Col>
-                    <Col sm={6} className="ms-auto">
-                      <Row>
-                        <Col lg={8}>
-                          <div>
-                            <Label
-                              for="shippingName"
-                              className="text-muted text-uppercase fw-semibold"
-                            >
-                              Shipping Address
-                            </Label>
-                          </div>
-                          <div className="mb-2">
-                            <Input
-                              type="text"
-                              className="form-control bg-light border-0"
-                              id="shippingName"
-                              placeholder="Full Name"
-                            />
-                            <div className="invalid-feedback">
-                              Please enter a full name
-                            </div>
-                          </div>
-                          <div className="mb-2">
-                            <Input
-                              type="textarea"
-                              className="form-control bg-light border-0"
-                              id="shippingAddress"
-                              rows="3"
-                              placeholder="Address"
-                              defaultValue=""
-                            ></Input>
-                            <div className="invalid-feedback">
-                              Please enter a address
-                            </div>
-                          </div>
-                          <div className="mb-2">
-                            <Input
-                              type="text"
-                              className="form-control bg-light border-0"
-                              data-plugin="cleave-phone"
-                              id="shippingPhoneno"
-                              placeholder="(123)456-7890"
-                            />
-                            <div className="invalid-feedback">
-                              Please enter a phone number
-                            </div>
-                          </div>
-                          <div>
-                            <Input
-                              type="text"
-                              className="form-control bg-light border-0"
-                              id="shippingTaxno"
-                              placeholder="Tax Number"
-                            />
-                            <div className="invalid-feedback">
-                              Please enter a tax number
-                            </div>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </CardBody>
-                <CardBody className="p-4">
-                  <div className="table-responsive">
-                    <Table className="invoice-table table-borderless table-nowrap mb-0">
-                      <thead className="align-middle">
-                        <tr className="table-active">
-                          <th scope="col" style={{ width: "50px" }}>
-                            #
-                          </th>
-                          <th scope="col">Product Details</th>
-                          <th scope="col" style={{ width: "120px" }}>
-                            <div className="d-flex currency-select input-light align-items-center">
-                              Rate
-                              <Select
-                                defaultValue={isCurrency}
-                                onChange={() => {
-                                  handleisCurrency();
-                                }}
-                                options={allcurrency}
-                                id="choices-payment-currency"
-                                className="form-selectborder-0 bg-light"
-                              ></Select>
 
-                            </div>
-                          </th>
-                          <th scope="col" style={{ width: "120px" }}>
-                            Quantity
-                          </th>
-                          <th
-                            scope="col"
-                            className="text-end"
-                            style={{ width: "150px" }}
-                          >
-                            Amount
-                          </th>
-                          <th
-                            scope="col"
-                            className="text-end"
-                            style={{ width: "105px" }}
-                          ></th>
-                        </tr>
-                      </thead>
-                      <tbody id="newlink">
-                        <tr id="1" className="product">
-                          <th scope="row" className="product-id">
-                            1
-                          </th>
-                          <td className="text-start">
-                            <div className="mb-2">
-                              <Input
-                                type="text"
-                                className="form-control bg-light border-0"
-                                id="productName-1"
-                                placeholder="Product Name"
-                              />
-                              <div className="invalid-feedback">
-                                Please enter a product name
-                              </div>
-                            </div>
-                            <Input
-                              type="textarea"
-                              className="form-control bg-light border-0"
-                              id="productDetails-1"
-                              rows="2"
-                              placeholder="Product Details"
-                              defaultValue=""
-                            ></Input>
-                          </td>
-                          <td>
-                            <Input
-                              type="number"
-                              className="form-control product-price bg-light border-0"
-                              placeholder="0.00"
-                              id="productRate-1"
-                              step="0.01"
-                            />
-                            <div className="invalid-feedback">
-                              Please enter a rate
-                            </div>
-                          </td>
-                          <td>
+                    <Col lg={4} sm={6}>
+                      <Row>
+                        <Label for="choices-payment-status">Region</Label>
+                        <div className="input-light">
+                          <Select
+                            className="bg-light border-0"
+                            value={regionvalue}
+                            onChange={
+                              handleisRegion}
+                            options={region}
+                            id="choices-payment-status"
+                          ></Select>
+                        </div>
+                        <Label for="choices-payment-status">Month</Label>
+                        <div className="input-light">
+                          <Select
+                            className="bg-light border-0"
+                            value={monthvalue}
+                            onChange={
+                              handleisMonth
+                            }
+                            options={month}
+                            id="choices-payment-status"
+                          ></Select>
+                        </div>
+                        <Label for="choices-payment-status">Year</Label>
+                        <div className="input-light">
+                          <Select
+                            className="bg-light border-0"
+                            value={yearvalue}
+                            onChange={
+                              handleisYear}
+                            options={year}
+                            id="choices-payment-status"
+                          ></Select>
+                        </div>
+                      </Row>
+                      <Row>
+                        <Col sm={6}>
+                          <div>
+                            <h5 className="fs-13 fw-medium text-muted">
+                              Default
+                            </h5>
                             <div className="input-step">
-                              <button type="button" className="minus">
-                                –
+                              <button
+                                type="button"
+                                className="minus"
+                                onClick={() => {
+                                  countFullDown(setInvoiceNumber, invoicenumber);
+                                }}
+                              >
+                                <i className="ri-rewind-mini-line"></i>
+                              </button>
+                              <button
+                                type="button"
+                                className="minus"
+                                onClick={() => {
+                                  countDown(setInvoiceNumber, invoicenumber);
+                                }}
+                              >
+                                <i className="ri-skip-back-mini-line"></i>
                               </button>
                               <Input
                                 type="number"
                                 className="product-quantity"
-                                id="product-qty-1"
-                                defaultValue="0"
+                                value={invoicenumber}
+                                min="0"
+                                max="100"
                                 readOnly
                               />
-                              <button type="button" className="plus">
-                                +
+                              <button
+                                type="button"
+                                className="plus"
+                                onClick={() => {
+                                  countUP(setInvoiceNumber, invoicenumber);
+                                }}
+                              >
+                                <i className=" ri-skip-forward-mini-line"></i>
+                              </button>
+                              <button
+                                type="button"
+                                className="plus"
+                                onClick={() => {
+                                  countFullUP(setInvoiceNumber, invoicenumber);
+                                }}
+                              >
+                                <i className=" ri-speed-mini-line"></i>
                               </button>
                             </div>
-                          </td>
-                          <td className="text-end">
-                            <div>
-                              <Input
-                                type="text"
-                                className="form-control bg-light border-0 product-line-price"
-                                placeholder="$0.00"
-                                readOnly
-                              />
-                            </div>
-                          </td>
-                          <td className="product-removal">
-                            <Link to="#" className="btn btn-success">
-                              Delete
-                            </Link>
-                          </td>
-                        </tr>
+                          </div>
+                        </Col>
+                      </Row>
 
-                        <tr id="newForm" style={{ display: "none" }}></tr>
-                        <tr>
-                          <td colSpan="9">
-                            <Link
-                              to="#"
-                              className="btn btn-soft-secondary fw-medium"
-                            >
-                              <i className="ri-add-fill me-1 align-bottom"></i>{" "}
-                              Add Item
-                            </Link>
-                          </td>
-                        </tr>
-                        <tr className="border-top border-top-dashed mt-2">
-                          <td colSpan="3"></td>
-                          <td colSpan="2" className="p-0">
-                            <Table className="table-borderless table-sm table-nowrap align-middle mb-0">
-                              <tbody>
-                                <tr>
-                                  <th scope="row">Sub Total</th>
-                                  <td style={{ width: "150px" }}>
-                                    <Input
-                                      type="text"
-                                      className="form-control bg-light border-0"
-                                      id="cart-subtotal"
-                                      placeholder="$0.00"
-                                      readOnly
-                                    />
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <th scope="row">Estimated Tax (12.5%)</th>
-                                  <td>
-                                    <Input
-                                      type="text"
-                                      className="form-control bg-light border-0"
-                                      id="cart-tax"
-                                      placeholder="$0.00"
-                                      readOnly
-                                    />
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <th scope="row">
-                                    Discount{" "}
-                                    <small className="text-muted">
-                                      (VELZON15)
-                                    </small>
-                                  </th>
-                                  <td>
-                                    <Input
-                                      type="text"
-                                      className="form-control bg-light border-0"
-                                      id="cart-discount"
-                                      placeholder="$0.00"
-                                      readOnly
-                                    />
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <th scope="row">Shipping Charge</th>
-                                  <td>
-                                    <Input
-                                      type="text"
-                                      className="form-control bg-light border-0"
-                                      id="cart-shipping"
-                                      placeholder="$0.00"
-                                      readOnly
-                                    />
-                                  </td>
-                                </tr>
-                                <tr className="border-top border-top-dashed">
-                                  <th scope="row">Total Amount</th>
-                                  <td>
-                                    <Input
-                                      type="text"
-                                      className="form-control bg-light border-0"
-                                      id="cart-total"
-                                      placeholder="$0.00"
-                                      readOnly
-                                    />
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </Table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
-                  <Row className="mt-3">
-                    <Col lg={4}>
-                      <div className="mb-2">
-                        <Label
-                          for="choices-payment-type"
-                          className="form-label text-muted text-uppercase fw-semibold"
-                        >
-                          Payment Details
-                        </Label>
-                        <div className="input-light">
-                          <Select
-                            value={ispaymentDetails}
-                            onChange={() => {
-                              handleispaymentDetails();
-                            }}
-                            options={paymentdetails}
-                            name="choices-single-default"
-                            id="idStatus"
-                            className="bg-light border-0"
-                          ></Select>
-                        </div>
-                      </div>
-                      <div className="mb-2">
-                        <Input
-                          className="form-control bg-light border-0"
-                          type="text"
-                          id="cardholderName"
-                          placeholder="Card Holder Name"
-                        />
-                      </div>
-                      <div className="mb-2">
-                        <Input
-                          className="form-control bg-light border-0"
-                          type="text"
-                          id="cardNumber"
-                          placeholder="xxxx xxxx xxxx xxxx"
-                        />
-                      </div>
-                      <div>
-                        <Input
-                          className="form-control  bg-light border-0"
-                          type="text"
-                          id="amountTotalPay"
-                          placeholder="$0.00"
-                          readOnly
-                        />
-                      </div>
                     </Col>
                   </Row>
-                  <div className="mt-4">
-                    <Label
-                      for="exampleFormControlTextarea1"
-                      className="form-label text-muted text-uppercase fw-semibold"
-                    >
-                      NOTES
-                    </Label>
-                    <Input
-                      type="textarea"
-                      className="form-control alert alert-info"
-                      id="exampleFormControlTextarea1"
-                      placeholder="Notes"
-                      rows="2"
-                      defaultValue="All accounts are to be paid within 7 days from receipt of
-                      invoice. To be paid by cheque or credit card or direct
-                      payment online. If account is not paid within 7 days the
-                      credits details supplied as confirmation of work
-                      undertaken will be charged the agreed quoted fee noted
-                      above."
-                    />
-                  </div>
-                  <div className="hstack gap-2 justify-content-end d-print-none mt-4">
-                    <button type="submit" className="btn btn-success">
-                      <i className="ri-printer-line align-bottom me-1"></i> Save
-                    </button>
-                    <Link to="#" className="btn btn-primary">
-                      <i className="ri-download-2-line align-bottom me-1"></i>{" "}
-                      Download Invoice
-                    </Link>
-                    <Link to="#" className="btn btn-danger">
-                      <i className="ri-send-plane-fill align-bottom me-1"></i>{" "}
-                      Send Invoice
-                    </Link>
-                  </div>
+
                 </CardBody>
               </Form>
+              <CardBody>
+                <div className="hstack gap-2 justify-content-end d-print-none mt-4">
+                  <button
+                    className="btn btn-soft-secondary fw-medium" onClick={setInitInvoice}
+                  >
+                    <i className="ri-add-fill me-1 align-bottom"></i>
+                    Create Invoice
+                  </button>
+                  <button className="btn btn-success" onClick={setSendInvoice}>
+                    <i className="ri-printer-line align-bottom me-1"></i> QR code Generate
+                  </button>
+                  <button className="btn btn-primary" onClick={togglemodal}>
+                    <i className="ri-download-2-line align-bottom me-1"></i>
+                    Download Invoice
+                  </button>
+                  <div className="form-check">
+                    <Input className="form-check-input" type="checkbox" defaultValue="" id="dashboardTask" checked={isChecked} />
+                    <Label className="form-check-label" htmlFor="dashboardTask">
+                      Generated
+                    </Label>
+                  </div>
+                </div>
+              </CardBody>
             </Card>
           </Col>
         </Row>
+
+        <Modal
+          isOpen={modal}
+          role="dialog"
+          autoFocus={true}
+          size="xl"
+          id="addAddressModal"
+          toggle={togglemodal}
+        >
+          <ModalHeader
+            toggle={() => {
+              setModal(!modal);
+            }}
+          >
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={() => {
+                setModal(!modal);
+              }}
+            >
+              Save
+            </button>
+          </ModalHeader>
+          <ModalBody>
+            <Form>
+              <div className="mb-3">
+                <Label for="addaddress-Name" className="form-label">
+                  Time
+                </Label>
+              </div>
+
+              <div className="mb-3">
+                <Label for="addaddress-textarea" className="form-label">
+                  Fuel
+                </Label>
+              </div>
+
+              <div className="mb-3">
+                <Label for="addaddress-Name" className="form-label">
+                  Oils
+                </Label>
+
+              </div>
+            </Form>
+          </ModalBody>
+        </Modal>
       </Container>
     </div>
+
+
   );
 };
 

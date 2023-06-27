@@ -1,12 +1,19 @@
 const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
+const Customer = db.customer;
 const Role = db.role;
 const Report = db.report;
 const Owner = db.owner;
 const Pilot = db.pilotprofile;
 const Airplane = db.airplaneprofile;
-const ScanData = db.scandata
+const ScanData = db.scandata;
+const Payments = db.payments;
+const Buildings = db.buildings;
+const Subscription = db.subscription;
+const Invoice = db.invoice;
+
+
 
 exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
@@ -35,6 +42,51 @@ exports.getAllUser = async (req, res) => {
   }
 };
 
+exports.getCustomers = async (req, res) => {
+  const customers = await Customer.find()
+  if (!req.body) {
+
+    res.status(200).send("No response.");
+
+  } else {
+    res.status(200).send(customers);
+  }
+};
+
+
+exports.getPaid = async (req, res) => {
+  const paid = await Subscription.find()
+  if (!req.body) {
+
+    res.status(200).send("No response.");
+
+  } else {
+    res.status(200).send(paid);
+  }
+};
+
+exports.getPayments = async (req, res) => {
+  const payments = await Payments.find()
+  if (!req.body) {
+
+    res.status(200).send("No response.");
+
+  } else {
+    res.status(200).send(payments);
+  }
+};
+
+exports.getBuilding = async (req, res) => {
+  const building = await Buildings.find()
+  if (!req.body) {
+
+    res.status(200).send("No response.");
+
+  } else {
+    res.status(200).send(building);
+  }
+};
+
 exports.getAllPilot = async (req, res) => {
   const pilots = await Pilot.find()
   if (!req.body) {
@@ -58,7 +110,6 @@ exports.getAllAirplane = async (req, res) => {
 };
 
 exports.getAllInvoice = async (req, res) => {
-  console.log(req.body, "invoice");
   const invoice = await ScanData.find()
   if (!req.body) {
 
@@ -69,6 +120,41 @@ exports.getAllInvoice = async (req, res) => {
   }
 };
 
+exports.getInvoiceNum = async (req, res) => {
+  const invoice = await Invoice.find()
+  if (!req.body) {
+
+    res.status(200).send("No response.");
+
+  } else {
+    res.status(200).send(invoice);
+  }
+};
+
+exports.getFilters = async (req, res) => {
+  try {
+  const year = parseInt(req.body.yearvalue.value);
+  const month = req.body.monthvalue.value;
+  const filter = {Month: month, Year: year}
+
+  const docs = await Payments.find(filter);
+  console.log(docs);
+  res.json(docs);
+  console.log(docs);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('internal server error');
+  } finally {
+    // await Payments.close();
+  }
+  // if (!req.body) {
+
+  //   res.status(200).send("No response.");
+
+  // } else {
+  //   res.status(200).send(invoice);
+  // }
+};
 
 
 exports.getAllOnwer = async (req, res) => {
@@ -83,7 +169,6 @@ exports.getAllOnwer = async (req, res) => {
 };
 
 exports.sendReport = async (req, res) => {
-  console.log(req.body);
   const report = new Report({
     selectedAirplane: req.body.selectedAirplane,
     selectedMark: req.body.selectedMark,
@@ -117,6 +202,65 @@ exports.sendReport = async (req, res) => {
 
 }
 
+exports.sendCustomers = async (req, res) => {
+  const customer = await Customer.insertMany(req.body);
+  if (!req.body) {
+
+    res.status(200).send("No response.");
+
+  } else {
+    res.status(200).send(customer);
+  }
+  
+
+}
+
+exports.sendPayments = async (req, res) => {
+  await Payments.insertMany(req.body);
+  
+  res.status(200).send({message: "Data saved successfully."});
+
+}
+
+exports.sendBuildings = async (req, res) => {
+  await Buildings.insertMany(req.body);
+  
+  res.status(200).send({message: "Data saved successfully."});
+
+}
+
+exports.paidSubscription = async (req, res) => {
+  const subscription = new Subscription({
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    customerid: req.body.customerid,
+    monthlyfee: req.body.monthlyfee,
+    paidsubscription: req.body.paidsubscription,
+  });
+
+  const data = await subscription.save();
+
+  try {
+    if (!req.body) {
+      res.send({
+        status: false,
+        message: "no response",
+      });
+    } else {
+      res.send({
+        status: true,
+        message: 'OK',
+        data: data,
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+  
+  res.status(200).send({message: "Data saved successfully."});
+
+}
+
 
 exports.receiveReportData = async (req, res) => {
   const receivereportdata = await Report.find();
@@ -129,6 +273,40 @@ exports.receiveReportData = async (req, res) => {
   }
 };
 
+exports.fixregionmonthlyfee = async (req, res) => {
+  const Region = req.body.selectedRegion.value;
+  const MonthlyFee = req.body.regionmonthlyfee;
+  
+  const filter = { Region: Region };
+  const updateDoc = { $set: { MonthlyFee: MonthlyFee } };
+  const result = await Customer.updateMany(filter, updateDoc);
+
+  if (result) {
+    res.send(`Successfully updated age of user ${Region} to ${MonthlyFee}.`);
+  } else {
+    res.status(404).send(`Region ${Region} not found.`);
+  }
+};
+
+
+
+
+exports.fixpersonmonthlyfee = async (req, res) => {
+  const FirstName = req.body.clientfirstname;
+  const LastName = req.body.clientlastname;
+  const MonthlyFee = req.body.personmonthlyfee;
+  
+  const filter = { FirstName: FirstName, LastName: LastName };
+  const updateDoc = { $set: { MonthlyFee: MonthlyFee } };
+  const result = await Customer.updateMany(filter, updateDoc);
+
+  if (result) {
+    res.send(`Successfully updated monthlyfee of user ${FirstName}+${LastName} to ${MonthlyFee}.`);
+  } else {
+    res.status(404).send(`Region ${FirstName}+${LastName} not found.`);
+  }
+};
+
 exports.sendReportData =async (req, res) => {
   console.log('param id', req.params.id);
 
@@ -136,10 +314,21 @@ exports.sendReportData =async (req, res) => {
     _id: req.params.id
   });
 
-  console.log('result', collection);
 
   if (!collection) res.send("Not found").status(404);
   else res.send(collection).status(200);
+}
+
+exports.initInvoiceData = async (req, res) => {
+
+  let invoicedata = await Invoice.findOne({
+    invoicenumber: req.body.invoicenumber
+  });
+
+  console.log('result', invoicedata);
+
+  if (!invoicedata) res.send("Not found").status(404);
+  else res.send(invoicedata).status(200);
 }
   
 exports.createOwnerProfile = async (req, res) => {
@@ -167,6 +356,37 @@ exports.createOwnerProfile = async (req, res) => {
         status: true,
         message: 'OK',
         data: showreportdata,
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+
+};
+
+exports.saveInvoiceData = async (req, res) => {
+  console.log(req.body);
+  const saveinvoice = new Invoice({
+    invoicenumber: req.body.invoicenumber,
+    monthvalue: req.body.monthvalue,
+    regionvalue: req.body.regionvalue,
+    setdate: req.body.setdate,
+    yearvalue: req.body.yearvalue,
+  });
+
+  const invoicedata = await saveinvoice.save();
+
+  try {
+    if (!req.body) {
+      res.send({
+        status: false,
+        message: "no response",
+      });
+    } else {
+      res.send({
+        status: true,
+        message: 'OK',
+        data: invoicedata,
       });
     }
   } catch (err) {

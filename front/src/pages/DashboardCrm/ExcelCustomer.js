@@ -1,79 +1,26 @@
 import React, { useEffect, useState } from "react";  
 import { read, utils, writeFile } from 'xlsx';
+import { useSelector, useDispatch } from "react-redux";
+import { sendGetCustomer } from "../../store/actions";
 
 const ExcekCustomer = () => {
-    const [movies, setMovies] = useState([]);
 
-    const handleImport = ($event) => {
-        const files = $event.target.files;
-        if (files.length) {
-            const file = files[0];
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const wb = read(event.target.result);
-                const sheets = wb.SheetNames;
+    const dispatch = useDispatch();
+    const data = {user: "customerlist"};
+    useEffect(() => {
+        dispatch(sendGetCustomer(data));
+    }, []);
 
-                if (sheets.length) {
-                    const rows = utils.sheet_to_json(wb.Sheets[sheets[0]]);
-                    setMovies(rows)
-                }
-            }
-            reader.readAsArrayBuffer(file);
-        }
-    }
+    const { customers, userListError } = useSelector(state => ({
+        customers: state.getCustomersDetails.customer,
+    }));
 
-
-    const handleExport = () => {
-        const headings = [[
-            'CustomerID',
-            'First Name',
-            'Last Name',
-            'Region',
-            'Floor Number',
-            'Address',
-            'Subscriptiontype',
-            'MonthlyFee',
-            'Phone Number',
-            'Title',
-            'Date of Subscription',
-            'Active',
-            'End of Subscription',
-            'building ID',
-
-        ]];
-        const wb = utils.book_new();
-        const ws = utils.json_to_sheet([]);
-        utils.sheet_add_aoa(ws, headings);
-        utils.sheet_add_json(ws, movies, { origin: 'A2', skipHeader: true });
-        utils.book_append_sheet(wb, ws, 'Report');
-        writeFile(wb, 'Movie Report.xlsx');
-    }
-    console.log(movies);
+    console.log(customers, "customer")
 
     return (
         <>
-            <div className="row" style={{marginTop:'100px'}}>
-                <div className="col-sm-6 offset-1">
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="input-group">
-                                <div className="custom-file">
-                                    <input type="file" name="file" className="custom-file-input" id="inputGroupFile" required onChange={handleImport}
-                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
-                                    <label className="custom-file-label" htmlFor="inputGroupFile">Choose file</label>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <div className="col-md-6">
-                            <button onClick={handleExport} className="btn btn-primary float-right">
-                                Export <i className="fa fa-download"></i>
-                            </button>
-                        </div> */}
-                    </div>
-                </div>
-            </div>
             <div className="row">
-                <div className="col-sm-12">
+                <div className="col-sm-12" style={{paddingTop:"100px"}}>
                     <table className="table">
                         <thead>
                             <tr>
@@ -81,45 +28,37 @@ const ExcekCustomer = () => {
                                 <th scope="col">First Name</th>
                                 <th scope="col">Last Name</th>
                                 <th scope="col">Region</th>
-                                <th scope="col">Floor Number</th>
                                 <th scope="col">Address</th>
                                 <th scope="col">Subscriptiontype</th>
                                 <th scope="col">MonthlyFee</th>
                                 <th scope="col">Phone Number</th>
                                 <th scope="col">Title</th>
-                                <th scope="col">Date of Subscription</th>
-                                <th scope="col">Active</th>
-                                <th scope="col">End of Subscription</th>
                                 <th scope="col">building ID</th>
 
                             </tr>
                         </thead>
                         <tbody> 
                                 {
-                                    movies.length
+                                    customers
                                     ?
-                                    movies.map((movie, index) => (
+                                    customers.map((customers, index) => (
                                         <tr key={index}>
-                                            <th scope="row">{ movie.CustomerID }</th>
-                                            <td>{ movie.FirstName }</td>
-                                            <td>{ movie.LastName }</td>
-                                            <td>{ movie.Region }</td>
-                                            <td>{ movie.FloorNumber }</td>
-                                            <td>{ movie.Address }</td>
-                                            <td>{ movie.Subscriptiontype }</td>
-                                            <td>{ movie.MonthlyFee }</td>
-                                            <td>{ movie.PhoneNumber }</td>
-                                            <td>{ movie.Title }</td>
-                                            <td>{ movie.DateOfSubscription }</td>
-                                            <td>{ movie.Active }</td>
-                                            <td>{ movie.EndOfSubscription }</td>
-                                            <td>{ movie.buildingid }</td>
-                                            <td><span className="badge bg-warning text-dark">{ movie.Rating }</span></td>
+                                            <th scope="row">{ customers.CustomerID }</th>
+                                            <td>{ customers.FirstName }</td>
+                                            <td>{ customers.LastName }</td>
+                                            <td>{ customers.Region }</td>
+                                            <td>{ customers.Address }</td>
+                                            <td>{ customers.Subscriptiontype }</td>
+                                            <td>{ customers.MonthlyFee }</td>
+                                            <td>{ customers.PhoneNumber }</td>
+                                            <td>{ customers.Title }</td>
+                                            <td>{ customers.buildingid }</td>
+                                            <td><span className="badge bg-warning text-dark">{ customers.Rating }</span></td>
                                         </tr> 
                                     ))
                                     :
                                     <tr>
-                                        <td colSpan="5" className="text-center">No Movies Found.</td>
+                                        <td colSpan="5" className="text-center">No customers Found.</td>
                                     </tr> 
                                 }
                         </tbody>
