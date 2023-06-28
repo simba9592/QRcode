@@ -66,6 +66,8 @@ module.exports = function(app) {
 
   app.post("/api/test/get_filters", controller.getFilters )
 
+  app.post("/api/test/get_customer", controller.getCustomer )
+
   app.post("/api/test/receive_report_data", controller.receiveReportData )
 
   app.get("/api/test/send_report_data/:id", controller.sendReportData )

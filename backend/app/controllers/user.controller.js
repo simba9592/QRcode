@@ -144,16 +144,23 @@ exports.getFilters = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send('internal server error');
-  } finally {
-    // await Payments.close();
-  }
-  // if (!req.body) {
+  } 
+};
 
-  //   res.status(200).send("No response.");
+exports.getCustomer = async (req, res) => {
+  try {
+  const customerid = parseInt(req.body.customerid);
+  const region = req.body.region;
+  const filter = {CustomerID: customerid, Region: region}
 
-  // } else {
-  //   res.status(200).send(invoice);
-  // }
+  const docs = await Customer.find(filter);
+  console.log(docs);
+  res.json(docs);
+  console.log(docs);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('internal server error');
+  } 
 };
 
 

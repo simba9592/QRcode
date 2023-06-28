@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-
+import AmiriFont from '../../assets/fonts/Amiri-Regular.ttf';
+// import './App.css'; 
 import {
   CardBody,
   Row,
@@ -23,6 +24,8 @@ import logoLight from "../../assets/images/logo-light.png";
 import { useSelector, useDispatch } from "react-redux";
 import { sendInvoice } from "../../store/actions";
 import { getOneInvoice } from "../../store/actions";
+import jsPDF from "jspdf";
+import QRCode from "qrcode";
 
 import {
 
@@ -31,6 +34,7 @@ import {
   ModalHeader,
   ModalBody,
 } from "reactstrap";
+// import QRCode from 'qrcode.react';
 
 const InvoiceCreate = () => {
   const [regionvalue, setisRegion] = useState();
@@ -44,10 +48,14 @@ const InvoiceCreate = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [modal, setModal] = useState(false);
   const [qrcodedata, setQrcodeData] = useState();
+  const [filtercustomer, setFilterCustomer] = useState([]);
+
 
   const togglemodal = () => {
     getCustomerID();
+    getCustomerData();
     setModal(!modal);
+    createPdf();
   };
 
   const getCustomerID = async () => {
@@ -62,11 +70,53 @@ const InvoiceCreate = () => {
         body: JSON.stringify(getfilters),
       });
       const responseJson = await response.json();
-      setQrcodeData(responseJson);
+
+      setFilterCustomer(responseJson);
+      // console.log(responseJson, "customer");
     } catch (error) {
       console.error(error);
     }
-  }; 
+  };
+
+  const getCustomerData = async () => {
+    const customerdata = [];
+    console.log(filtercustomer.length);
+
+    for (let i = 0; i < filtercustomer.length; i++) {
+      const customerid = filtercustomer[i].CustomerID;
+      const region = regionvalue.value;
+      const getfilters = { customerid, region };
+      try {
+        const response = await fetch('http://localhost:8080/api/test/get_customer', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(getfilters),
+        }).then(response => {
+          return response.json();
+        }).then(data => {
+       
+          customerdata.push(data);
+
+        }
+        );
+
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    const filteredArray = customerdata.filter(value => value.length > 0);
+
+   
+    setQrcodeData(filteredArray);
+    
+
+
+  };
 
 
 
@@ -224,6 +274,76 @@ const InvoiceCreate = () => {
     getInvoiceNumber({ "data": "data" });
 
   }, [])
+
+
+  //create pdf function
+  async function createPdf() {
+    const qrcodedatalength = qrcodedata ? qrcodedata.length : 5
+    const pageCount = Math.ceil(qrcodedatalength / 5);
+    const pageWidth = 595.28; // A4 page width in points
+    const pageHeight = 841.89; // A4 page height in points
+    const invoiceWidth = 400.5;
+    const invoiceHeight = 168.3;
+    const margin = 0;
+    let invoiceIndex = 0;
+    const borderThickness = 1;
+    const codeWidth = 195.28;
+    const amiriFont = new FontFace('Amiri', `url(${AmiriFont})`);
+    const pdf = new jsPDF("p", "pt", "a4");
+ 
+    for (let i = 1; i <= pageCount; i++) {
+      if (i > 1) {
+        pdf.addPage();
+      }
+  
+      for (let j = 0; j < 5; j++) {
+        let invoice ={}
+        if(qrcodedata[invoiceIndex]){
+          invoice = qrcodedata[invoiceIndex][0];
+          console.log(invoice);
+        }
+       
+        if (!invoice) {
+          break;
+        }
+  
+        const x = margin;
+        const y = margin + Math.floor(j) * (invoiceHeight + margin);
+        const qrData = `customerID = ${invoice.CustomerID}`
+        const qrCode =  await QRCode.toDataURL(qrData)
+
+        pdf.rect(x, y, invoiceWidth, invoiceHeight);
+        pdf.setFontSize(14);
+        pdf.text(`Collection (customerID #${invoice.CustomerID}) `, x + 10, y + 20);
+        pdf.setFontSize(10);
+        pdf.addFileToVFS('Amiri.ttf', AmiriFont);
+        pdf.addFont('Amiri.ttf', 'Amiri', 'mormal');
+        pdf.setFont('Amiri');
+        pdf.text(x + 150, y + 40, `Region: ${invoice.Region}`);
+        // pdf.text(`Building: ${invoice.Title}`, x + 250, y + 60);
+        pdf.text(`Amount: ${invoice.MonthlyFee}`, x + 250, y + 80);
+        // pdf.text(`Customer: ${invoice.FirstName} ${invoice.LastName}`, x + 250, y + 100);
+        pdf.text(`Date: ${monthvalue.value +""+ yearvalue.value}`, x + 250, y + 120);
+
+        pdf.addImage(qrCode, "JPEG", x + 30, y + 40, 100, 100);
+
+        pdf.rect(x + invoiceWidth, y, codeWidth, invoiceHeight)
+        pdf.setFontSize(14);
+        pdf.text(`CUSTOMER #${invoice.CustomerID}`, x + invoiceWidth + 10, y + 20);
+
+        // pdf.setFontSize(10);
+        // pdf.text(`Region: ${invoice.Region}`, x + invoiceWidth +  30, y + 40);
+        // pdf.text(`Customer Name: ${invoice.FirstName} ${invoice.LastName}`, x + invoiceWidth +30, y + 60);
+        // pdf.text(`Building: ${invoice.Title}`, x + invoiceWidth +30, y + 80);
+        // pdf.text(`Date: ${monthvalue.value +""+ yearvalue.value}`, x + invoiceWidth +30, y + 100);
+        // pdf.text(`Amount Due: ${invoice.MonthlyFee}`, x + invoiceWidth +30, y + 120);
+
+        invoiceIndex++;
+      }
+    }
+  
+    pdf.save("invoices.pdf");
+  }
 
 
 
@@ -446,26 +566,50 @@ const InvoiceCreate = () => {
             </button>
           </ModalHeader>
           <ModalBody>
-            <Form>
-              <div className="mb-3">
-                <Label for="addaddress-Name" className="form-label">
-                  Time
-                </Label>
-              </div>
+            <div className="row">
+              <div className="col-sm-12" style={{ paddingTop: "100px" }}>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">PaymentID</th>
+                      <th scope="col">Month</th>
+                      <th scope="col">Year</th>
+                      <th scope="col">CustomerID</th>
+                      <th scope="col">PaymentH</th>
+                      {/* <th scope="col">PaymentFor</th>
+                                <th scope="col">Paid?</th> */}
+                      <th scope="col">Amount Paid(L.L.)</th>
+                      <th scope="col">realamount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      filtercustomer
+                        ?
+                        filtercustomer.map((filtercustomer, index) => (
+                          <tr key={index}>
+                            <th scope="row">{filtercustomer.PaymentID}</th>
+                            <td>{filtercustomer.Month}</td>
+                            <td>{filtercustomer.Year}</td>
+                            <td>{filtercustomer.CustomerID}</td>
+                            <td>{filtercustomer.PaymentH}</td>
+                            {/* <td>{ filtercustomer.PaymentFor }</td>
+                                            <td>{ filtercustomer.Paid }</td> */}
+                            <td>{filtercustomer.AmountPaid}</td>
+                            <td>{filtercustomer.realamount}</td>
 
-              <div className="mb-3">
-                <Label for="addaddress-textarea" className="form-label">
-                  Fuel
-                </Label>
+                            <td><span className="badge bg-warning text-dark">{filtercustomer.Rating}</span></td>
+                          </tr>
+                        ))
+                        :
+                        <tr>
+                          <td colSpan="5" className="text-center">No filtercustomers Found.</td>
+                        </tr>
+                    }
+                  </tbody>
+                </table>
               </div>
-
-              <div className="mb-3">
-                <Label for="addaddress-Name" className="form-label">
-                  Oils
-                </Label>
-
-              </div>
-            </Form>
+            </div>
           </ModalBody>
         </Modal>
       </Container>
