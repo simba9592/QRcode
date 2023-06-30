@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AmiriFont from '../../assets/fonts/Amiri-Regular.ttf';
+// import AmiriFont from '../../assets/fonts/Amiri-Regular.ttf';
 // import './App.css'; 
 import {
   CardBody,
@@ -47,14 +47,14 @@ const InvoiceCreate = () => {
   const [invoicenum, setInvoiceNum] = useState();
   const [isChecked, setIsChecked] = useState(false);
   const [modal, setModal] = useState(false);
-  const [qrcodedata, setQrcodeData] = useState();
+  const [qrcodedata, setQrcodeData] = useState([]);
   const [filtercustomer, setFilterCustomer] = useState([]);
 
 
-  const togglemodal = () => {
-    getCustomerID();
-    getCustomerData();
-    setModal(!modal);
+  const togglemodal = async () => {
+    await getCustomerID();
+    await getCustomerData();
+    // setModal(!modal);
     createPdf();
   };
 
@@ -97,7 +97,7 @@ const InvoiceCreate = () => {
         }).then(response => {
           return response.json();
         }).then(data => {
-       
+
           customerdata.push(data);
 
         }
@@ -111,11 +111,7 @@ const InvoiceCreate = () => {
 
     const filteredArray = customerdata.filter(value => value.length > 0);
 
-   
     setQrcodeData(filteredArray);
-    
-
-
   };
 
 
@@ -288,61 +284,71 @@ const InvoiceCreate = () => {
     let invoiceIndex = 0;
     const borderThickness = 1;
     const codeWidth = 195.28;
-    const amiriFont = new FontFace('Amiri', `url(${AmiriFont})`);
+
     const pdf = new jsPDF("p", "pt", "a4");
- 
+    pdf.addFont("Amiri-Regular.ttf", "Amiri-Regular", "normal"); 
+    pdf.setFont("Amiri-Regular", "normal");
+    // pdf.setR2L(true);
+        // pdf.addFont("NotoSansArabic-Regular.ttf", "NotoSansArabic", "normal"); 
+    // pdf.setFont("NotoSansArabic", "normal");
+    // pdf.setR2L(true);
+
     for (let i = 1; i <= pageCount; i++) {
       if (i > 1) {
         pdf.addPage();
       }
-  
+
       for (let j = 0; j < 5; j++) {
-        let invoice ={}
-        if(qrcodedata[invoiceIndex]){
+        let invoice = {}
+        if (qrcodedata[invoiceIndex]) {
           invoice = qrcodedata[invoiceIndex][0];
-          console.log(invoice);
+          console.log(invoice,"invoice");
         }
-       
+
         if (!invoice) {
           break;
         }
-  
+
         const x = margin;
         const y = margin + Math.floor(j) * (invoiceHeight + margin);
-        const qrData = `customerID = ${invoice.CustomerID}`
-        const qrCode =  await QRCode.toDataURL(qrData)
+        const qrData = `عميل ${invoice.CustomerID}`
+        const qrCode = await QRCode.toDataURL(qrData)
 
         pdf.rect(x, y, invoiceWidth, invoiceHeight);
+        // pdf.rect(x+250, y, invoiceWidth-40, y+30);
+        pdf.setFontSize(20);
+        pdf.rect(x+20, y+30, invoiceWidth-40, invoiceHeight-40);
+
+        pdf.text(`شبكة الكابل `, x+250 , y+20 );
         pdf.setFontSize(14);
-        pdf.text(`Collection (customerID #${invoice.CustomerID}) `, x + 10, y + 20);
+        pdf.text(`مجموعة هوية الزبون : ${invoice.CustomerID} `, x + 10, y + 20);
         pdf.setFontSize(10);
-        pdf.addFileToVFS('Amiri.ttf', AmiriFont);
-        pdf.addFont('Amiri.ttf', 'Amiri', 'mormal');
-        pdf.setFont('Amiri');
-        pdf.text(x + 150, y + 40, `Region: ${invoice.Region}`);
-        // pdf.text(`Building: ${invoice.Title}`, x + 250, y + 60);
-        pdf.text(`Amount: ${invoice.MonthlyFee}`, x + 250, y + 80);
-        // pdf.text(`Customer: ${invoice.FirstName} ${invoice.LastName}`, x + 250, y + 100);
-        pdf.text(`Date: ${monthvalue.value +""+ yearvalue.value}`, x + 250, y + 120);
+
+        pdf.text(x + 150, y + 40, `منطقة: ${invoice.Region}`);
+        pdf.text(`مبنى: ${invoice.Title}`, x + 250, y + 60);
+        pdf.text(`كمية: ${invoice.MonthlyFee}`, x + 250, y + 80);
+        pdf.text(`عميل: ${invoice.FirstName} ${invoice.LastName}`, x + 250, y + 100);
+        pdf.text(`تاريخ: ${monthvalue.value + ",   " + yearvalue.value}`, x + 250, y + 120);
 
         pdf.addImage(qrCode, "JPEG", x + 30, y + 40, 100, 100);
 
         pdf.rect(x + invoiceWidth, y, codeWidth, invoiceHeight)
         pdf.setFontSize(14);
-        pdf.text(`CUSTOMER #${invoice.CustomerID}`, x + invoiceWidth + 10, y + 20);
+        pdf.text(`هوية الزبون ${invoice.CustomerID}`, x + invoiceWidth + 10, y + 20);
 
-        // pdf.setFontSize(10);
-        // pdf.text(`Region: ${invoice.Region}`, x + invoiceWidth +  30, y + 40);
-        // pdf.text(`Customer Name: ${invoice.FirstName} ${invoice.LastName}`, x + invoiceWidth +30, y + 60);
-        // pdf.text(`Building: ${invoice.Title}`, x + invoiceWidth +30, y + 80);
-        // pdf.text(`Date: ${monthvalue.value +""+ yearvalue.value}`, x + invoiceWidth +30, y + 100);
-        // pdf.text(`Amount Due: ${invoice.MonthlyFee}`, x + invoiceWidth +30, y + 120);
+        pdf.setFontSize(10);
+        pdf.text(`منطقة: ${invoice.Region}`, x + invoiceWidth +  30, y + 40);
+        pdf.text(`عميل: ${invoice.FirstName} ${invoice.LastName}`, x + invoiceWidth +30, y + 60);
+        pdf.text(`مبنى: ${invoice.Title}`, x + invoiceWidth +30, y + 80);
+        pdf.text(`تاريخ: ${monthvalue.value +",   "+ yearvalue.value}`, x + invoiceWidth +30, y + 100);
+        pdf.text(`كمية: ${invoice.MonthlyFee}`, x + invoiceWidth +30, y + 120);
 
         invoiceIndex++;
       }
     }
-  
+    // pdf.setR2L(false);
     pdf.save("invoices.pdf");
+
   }
 
 
