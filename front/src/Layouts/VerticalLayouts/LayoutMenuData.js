@@ -68,12 +68,7 @@ const Navdata = () => {
                     link: "/dashboard-admin",
                     parentId: "dashboard",
                 },
-                {
-                    id: "crm",
-                    label: "Create Invoice",
-                    link: "/apps-invoice-states",
-                    parentId: "dashboard",
-                },
+
                 {
                     id: "ecommerce",
                     label: "Setting",
@@ -96,6 +91,12 @@ const Navdata = () => {
                     id: "ecommerce",
                     label: "User List",
                     link: "/apps-ecommerce-user-list",
+                    parentId: "dashboard",
+                },
+                {
+                    id: "crm",
+                    label: "Invoice State",
+                    link: "/apps-collection-data",
                     parentId: "dashboard",
                 },
 

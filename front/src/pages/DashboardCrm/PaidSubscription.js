@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { read, utils, writeFile } from 'xlsx';
 import { useSelector, useDispatch } from "react-redux";
 import { getPayments } from "../../store/actions";
+import URLname from "../../common/const";
 
 const ExcekPayments = () => {
 
@@ -10,7 +11,7 @@ const ExcekPayments = () => {
 
     const sendDataToServer = async (data) => {
         try {
-          const response = await fetch('http://localhost:8080/api/test/getpaid', {
+          const response = await fetch(URLname + '/api/test/getpaid', {
             method: 'POST',
             headers: {
               Accept: 'application/json',

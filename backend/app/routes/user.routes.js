@@ -40,6 +40,12 @@ module.exports = function(app) {
 
   app.post("/api/test/paidsubscription", controller.paidSubscription )
 
+  app.post("/api/test/sendpaymentdata", controller.sendPaymentData )
+
+  app.post("/api/test/sendbuilding", controller.sendBuilding )
+
+  app.post("/api/test/sendcustomer", controller.sendCustomer )
+
   app.post("/api/test/region_monthlyfee_fix", controller.fixregionmonthlyfee )
 
   app.post("/api/test/person_monthlyfee_fix", controller.fixpersonmonthlyfee )

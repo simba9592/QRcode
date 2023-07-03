@@ -9,6 +9,7 @@ import Dropzone from "react-dropzone";
 import { read, utils, writeFile } from 'xlsx';
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import URLname from "../../common/const";
 
 import {
 
@@ -270,7 +271,7 @@ const EcommerceCheckout = () => {
   const sendRegionMonthlyfeeFixData = async () => {
     const sendregionmonthlyfeedata = { selectedRegion, regionmonthlyfee };
     try {
-      const response = await fetch('http://localhost:8080/api/test/region_monthlyfee_fix', {
+      const response = await fetch(URLname + '/api/test/region_monthlyfee_fix', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -289,7 +290,7 @@ const EcommerceCheckout = () => {
     const sendpersonmonthlyfeedata = { clientfirstname, clientlastname, personmonthlyfee };
     console.log(sendpersonmonthlyfeedata);
     try {
-      const response = await fetch('http://localhost:8080/api/test/person_monthlyfee_fix', {
+      const response = await fetch(URLname + '/api/test/person_monthlyfee_fix', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -305,10 +306,10 @@ const EcommerceCheckout = () => {
   };
 
   const sendPaidSubscription = async () => {
-    const paidsubscriptiondata = {customerid, firstname, lastname, paidsubscription, monthlyfee}
+    const paidsubscriptiondata = { customerid, firstname, lastname, paidsubscription, monthlyfee }
     console.log(paidsubscriptiondata)
     try {
-      const response = await fetch('http://localhost:8080/api/test/paidsubscription', {
+      const response = await fetch(URLname + '/api/test/paidsubscription', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -322,10 +323,88 @@ const EcommerceCheckout = () => {
       console.error(error);
     }
   }
+//customer variable
+  const [customerid_create, setCustomerIDCreate] = useState('');
+  const [firstname_create, setFirstNameCreate] = useState('');
+  const [lastname_create, setLastNameCreate] = useState('');
+  const [monthlyfee_create, setMonthlyFeeCreate] = useState(0);
+  const [region_create, setRegionCreate] = useState('');
+  const [address_create, setAddressCreate] = useState('');
+  const [subscription_create, setSubscriptionCreate] = useState('');
+  const [phonenumber_create, setPhoneNumberCreate] = useState('');
+  const [title_create, setTitleCreate] = useState('');
 
-  const sendReportData = () => {
-    const sendreportdate = { selectedMark, selectedDates, formpredata, formpostdata, fuelexpenss, oilsexpenss, serviceexpenss, fboexpenss };
-    dispatch(sendReport(sendreportdate));
+  //payment variable
+  const [customerid_payment, setCustomerIDPayment] = useState('');
+  const [paymentid, setPaymentId] = useState('');
+  const [month_payment, setMonthPayment] = useState('');
+  const [year_payment, setYearPayment] = useState('');
+  const [paymenth_payment, setPaymentHPayment] = useState(0);
+  const [amount_payment, setAmountPaid] = useState(0);
+  const [realamount_payment, setRealAmount] = useState(0);
+
+  //building variable
+  const [buildingid, setBldgID] = useState('');
+  const [buildingname, setBldgName] = useState('');
+  const [region_building, setRegionBuilding] = useState('');
+  const [building_address, setBuildingAddress] = useState('');
+  const [building_order, setBuildingOrder] = useState('');
+
+  const sendCreatePayment = async () => {
+    const sendcreatepaymentdata = { customerid_payment, paymentid, month_payment, year_payment, paymenth_payment, amount_payment, realamount_payment };
+    console.log(sendcreatepaymentdata);
+    try {
+      const response = await fetch(URLname + '/api/test/sendpaymentdata', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sendcreatepaymentdata),
+      });
+      const responseJson = await response.json();
+      console.log(responseJson);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const sendCreateBuilding = async () => {
+    const sendcreatebuildingdata = { buildingid, buildingname, region_building, building_address, building_order };
+    console.log(sendcreatebuildingdata);
+    try {
+      const response = await fetch(URLname + '/api/test/sendbuilding', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sendcreatebuildingdata),
+      });
+      const responseJson = await response.json();
+      console.log(responseJson);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const sendCreateCustomer = async () => {
+    const sendcreatecustomerdata = { customerid_create, firstname_create, lastname_create, monthlyfee_create, region_create, address_create, subscription_create, phonenumber_create, title_create}
+    console.log(sendcreatecustomerdata);
+    try {
+      const response = await fetch(URLname + '/api/test/sendcustomer', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sendcreatecustomerdata),
+      });
+      const responseJson = await response.json();
+      console.log(responseJson);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   document.title = "Create Report";
@@ -654,7 +733,7 @@ const EcommerceCheckout = () => {
                                     placeholder="Enter lastname"
                                     onChange={e => setLastName(e.target.value)}
                                   />
-                      
+
                                   <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="lastname-addon"></button>
                                 </div>
                               </div>
@@ -670,12 +749,12 @@ const EcommerceCheckout = () => {
                                     placeholder="Enter monthlyfee"
                                     onChange={e => setMonthlyFee(e.target.value)}
                                   />
-                       
+
                                   <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="monthlyfee-addon"></button>
                                 </div>
                               </div>
 
-                              
+
                               <div className="mb-3">
                                 <Label className="form-label" htmlFor="paidsubscription-input">Paid Subscription</Label>
                                 <div className="position-relative auth-pass-inputgroup mb-3">
@@ -687,7 +766,7 @@ const EcommerceCheckout = () => {
                                     placeholder="Enter paidsubscription"
                                     onChange={e => setPaidSubscription(e.target.value)}
                                   />
-                           
+
                                   <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
                                 </div>
                               </div>
@@ -699,31 +778,381 @@ const EcommerceCheckout = () => {
                           </CardBody>
                         </div>
 
-                      </TabPane>
-
-                      <TabPane tabId={4} id="pills-finish">
-                        <div className="text-center py-5">
-                          <div className="mb-4">
-                            <lord-icon
-                              src="https://cdn.lordicon.com/lupuorrc.json"
-                              trigger="loop"
-                              colors="primary:#0ab39c,secondary:#405189"
-                              style={{ width: "120px", height: "120px" }}
-                            ></lord-icon>
+                        <div >
+                          <div>
+                            <h5 className="mb-1">Create Customer</h5>
                           </div>
-                          <h5>Thank you ! Your Report is Completed !</h5>
+                          <CardBody>
+                            <Form>
+                              <Row>
+                                <Col lg={4} sm={6}>
+                                  <Label htmlFor="customerID" className="form-label">CustomerID</Label>
+                                  <Input
+                                    name="customerID"
+                                    className="form-control"
+                                    placeholder="Enter customerID"
+                                    type="customerID"
+                                    value={customerid_create}
+                                    onChange={e => setCustomerIDCreate(e.target.value)}
 
-                          <h3 className="fw-semibold">
-                            Report ID:{" "}
-                            <a
-                              href="apps-ecommerce-order-details"
-                              className="text-decoration-underline"
-                            >
-                              VZ2451
-                            </a>
-                          </h3>
+                                  />
+                                </Col>
+
+                                <Col lg={4} sm={6}>
+                                  <Label className="form-label" htmlFor="firstname-input">FirstName</Label>
+                                  <div className="position-relative auth-pass-inputgroup mb-3">
+                                    <Input
+                                      name="firstname"
+                                      value={firstname_create}
+                                      type="firstname"
+                                      className="form-control pe-5"
+                                      placeholder="Enter firstname"
+                                      onChange={e => setFirstNameCreate(e.target.value)}
+                                    />
+                                    <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="firstname-addon"></button>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={4} sm={6}>
+                                  <Label className="form-label" htmlFor="lastname-input">LastName</Label>
+                                  <div className="position-relative auth-pass-inputgroup mb-3">
+                                    <Input
+                                      name="lastname"
+                                      value={lastname_create}
+                                      type="lastname"
+                                      className="form-control pe-5"
+                                      placeholder="Enter lastname"
+                                      onChange={e => setLastNameCreate(e.target.value)}
+                                    />
+
+                                    <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="lastname-addon"></button>
+                                  </div>
+                                </Col>
+
+                                <Col lg={4} sm={6}>
+                                  <Label className="form-label" htmlFor="monthlyfee-input">MonthlyFee</Label>
+                                  <div className="position-relative auth-pass-inputgroup mb-3">
+                                    <Input
+                                      name="monthlyfee"
+                                      value={monthlyfee_create}
+                                      type="number"
+                                      className="form-control pe-5"
+                                      placeholder="Enter monthlyfee"
+                                      onChange={e => setMonthlyFeeCreate(e.target.value)}
+                                    />
+
+                                    <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="monthlyfee-addon"></button>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={4} sm={6}>
+                                  <Label className="form-label" htmlFor="region-input">Region</Label>
+                                  <div className="position-relative auth-pass-inputgroup mb-3">
+                                    <Input
+                                      name="region"
+                                      value={region_create}
+                                      type="text"
+                                      className="form-control pe-5"
+                                      placeholder="Enter Region"
+                                      onChange={e => setRegionCreate(e.target.value)}
+                                    />
+
+                                    <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
+                                  </div>
+                                </Col>
+
+                                <Col lg={4} sm={6}>
+                                  <Label className="form-label" htmlFor="address-input">Address</Label>
+                                  <div className="position-relative auth-pass-inputgroup mb-3">
+                                    <Input
+                                      name="address"
+                                      value={address_create}
+                                      type="text"
+                                      className="form-control pe-5"
+                                      placeholder="Enter Address"
+                                      onChange={e => setAddressCreate(e.target.value)}
+                                    />
+
+                                    <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={4} sm={6}>
+                                  <Label className="form-label" htmlFor="subscription-input">Subscription</Label>
+                                  <div className="position-relative auth-pass-inputgroup mb-3">
+                                    <Input
+                                      name="subscription"
+                                      value={subscription_create}
+                                      type="text"
+                                      className="form-control pe-5"
+                                      placeholder="Enter subscription"
+                                      onChange={e => setSubscriptionCreate(e.target.value)}
+                                    />
+
+                                    <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
+                                  </div>
+                                </Col>
+
+                                <Col lg={4} sm={6}>
+                                  <Label className="form-label" htmlFor="phonenumber-input">PhoneNumber</Label>
+                                  <div className="position-relative auth-pass-inputgroup mb-3">
+                                    <Input
+                                      name="phonenumber"
+                                      value={phonenumber_create}
+                                      type="text"
+                                      className="form-control pe-5"
+                                      placeholder="Enter PhoneNumber"
+                                      onChange={e => setPhoneNumberCreate(e.target.value)}
+                                    />
+
+                                    <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Col lg={4} sm={6}>
+                                <Label className="form-label" htmlFor="title-input">Title</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="title"
+                                    value={title_create}
+                                    type="text"
+                                    className="form-control pe-5"
+                                    placeholder="Enter title"
+                                    onChange={e => setTitleCreate(e.target.value)}
+                                  />
+
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
+                                </div>
+                              </Col>
+
+                              <div className="mt-4">
+                                <Button color="success" className="btn btn-success w-100" onClick={sendCreateCustomer}>Save</Button>
+                              </div>
+                            </Form>
+                          </CardBody>
                         </div>
+
+                        <div >
+                          <div>
+                            <h5 className="mb-1">Create Payment</h5>
+                          </div>
+                          <CardBody>
+                            <Form>
+
+                            <Col lg={4} sm={6}>
+                                <Label htmlFor="customerID" className="form-label">CustomerID</Label>
+                                <Input
+                                  name="customerID"
+                                  className="form-control"
+                                  placeholder="Enter customerID"
+                                  type="customerID"
+                                  value={customerid_payment}
+                                  onChange={e => setCustomerIDPayment(e.target.value)}
+
+                                />
+                              </Col>
+
+                              <Col lg={4} sm={6}>
+                                <Label className="form-label" htmlFor="firstname-input">PaymentID</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="paymentid"
+                                    value={paymentid}
+                                    type="paymentid"
+                                    className="form-control pe-5"
+                                    placeholder="Enter paymentid"
+                                    onChange={e => setPaymentId(e.target.value)}
+                                  />
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="firstname-addon"></button>
+                                </div>
+                              </Col>
+
+                              <Col lg={4} sm={6}>
+                                <Label className="form-label" htmlFor="month-input">Month</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="month"
+                                    value={month_payment}
+                                    type="text"
+                                    className="form-control pe-5"
+                                    placeholder="Enter Month"
+                                    onChange={e => setMonthPayment(e.target.value)}
+                                  />
+
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="lastname-addon"></button>
+                                </div>
+                              </Col>
+
+                              <Col lg={4} sm={6}>
+                                <Label className="form-label" htmlFor="monthlyfee-input">Year</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="year"
+                                    value={year_payment}
+                                    type="text"
+                                    className="form-control pe-5"
+                                    placeholder="Enter year"
+                                    onChange={e => setYearPayment(e.target.value)}
+                                  />
+
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="monthlyfee-addon"></button>
+                                </div>
+                              </Col>
+
+
+                              <Col lg={4} sm={6}>
+                                <Label className="form-label" htmlFor="paymenth-input">PaymentH</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="paymenth"
+                                    value={paymenth_payment}
+                                    type="number"
+                                    className="form-control pe-5"
+                                    placeholder="Enter PaymentH"
+                                    onChange={e => setPaymentHPayment(e.target.value)}
+                                  />
+
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
+                                </div>
+                              </Col>
+
+                              <Col lg={4} sm={6}>
+                                <Label className="form-label" htmlFor="paymenth-input">Amount Paid(L.L.)</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="amountpaid"
+                                    value={amount_payment}
+                                    type="number"
+                                    className="form-control pe-5"
+                                    placeholder="Enter Amount Paid"
+                                    onChange={e => setAmountPaid(e.target.value)}
+                                  />
+
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
+                                </div>
+                              </Col>
+
+                              <Col lg={4} sm={6}>
+                                <Label className="form-label" htmlFor="paymenth-input">Realamount</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="realamount"
+                                    value={realamount_payment}
+                                    type="number"
+                                    className="form-control pe-5"
+                                    placeholder="Enter realamount"
+                                    onChange={e => setRealAmount(e.target.value)}
+                                  />
+
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
+                                </div>
+                              </Col>
+
+                              <div className="mt-4">
+                                <Button color="success" className="btn btn-success w-100" onClick={sendCreatePayment}>Save</Button>
+                              </div>
+                            </Form>
+                          </CardBody>
+                        </div>
+
+                        <div >
+                          <div>
+                            <h5 className="mb-1">Create Building</h5>
+                          </div>
+                          <CardBody>
+                            <Form>
+
+                              <div className="mb-3">
+                                <Label htmlFor="customerID" className="form-label">BldgID</Label>
+                                <Input
+                                  name="BldgID"
+                                  className="form-control"
+                                  placeholder="Enter customerID"
+                                  type="BldgID"
+                                  value={buildingid}
+                                  onChange={e => setBldgID(e.target.value)}
+
+                                />
+                              </div>
+
+                              <div className="mb-3">
+                                <Label className="form-label" htmlFor="firstname-input">BldgName</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="BldgName"
+                                    value={buildingname}
+                                    type="BldgName"
+                                    className="form-control pe-5"
+                                    placeholder="Enter BldgName"
+                                    onChange={e => setBldgName(e.target.value)}
+                                  />
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="firstname-addon"></button>
+                                </div>
+                              </div>
+
+                              <div className="mb-3">
+                                <Label className="form-label" htmlFor="lastname-input">Region</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="Region"
+                                    value={region_building}
+                                    type="Region"
+                                    className="form-control pe-5"
+                                    placeholder="Enter Region"
+                                    onChange={e => setRegionBuilding(e.target.value)}
+                                  />
+
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="lastname-addon"></button>
+                                </div>
+                              </div>
+
+                              <div className="mb-3">
+                                <Label className="form-label" htmlFor="monthlyfee-input">BldgAddress</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="BldgAddress"
+                                    value={building_address}
+                                    type="BldgAddress"
+                                    className="form-control pe-5"
+                                    placeholder="Enter BldgAddress"
+                                    onChange={e => setBuildingAddress(e.target.value)}
+                                  />
+
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="monthlyfee-addon"></button>
+                                </div>
+                              </div>
+
+
+                              <div className="mb-3">
+                                <Label className="form-label" htmlFor="paidsubscription-input">BldgOrder</Label>
+                                <div className="position-relative auth-pass-inputgroup mb-3">
+                                  <Input
+                                    name="BldgOrder"
+                                    value={building_order}
+                                    type="BldgOrder"
+                                    className="form-control pe-5"
+                                    placeholder="Enter BldgOrder"
+                                    onChange={e => setBuildingOrder(e.target.value)}
+                                  />
+
+                                  <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none" type="button" id="paidsubscription-addon"></button>
+                                </div>
+                              </div>
+
+                              
+
+                              <div className="mt-4">
+                                <Button color="success" className="btn btn-success w-100" onClick={sendCreateBuilding}>Save</Button>
+                              </div>
+                            </Form>
+                          </CardBody>
+                        </div>
+
                       </TabPane>
+
                     </TabContent>
                   </Form>
                 </CardBody>

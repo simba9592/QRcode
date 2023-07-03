@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col } from 'reactstrap';
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from 'react';
+import URLname from '../../common/const';
 
 const CollectionData = () => {
 
@@ -15,7 +16,7 @@ const CollectionData = () => {
     const sendInvoiceData = async () => {
         const invoicedata = { invoice: "data" }
         try {
-            const response = await fetch('http://localhost:8080/api/test/invoice_data', {
+            const response = await fetch(URLname + '/api/test/invoice_data', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

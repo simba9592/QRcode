@@ -268,6 +268,108 @@ exports.paidSubscription = async (req, res) => {
 
 }
 
+exports.sendPaymentData = async (req, res) => {
+  const paymentdata = new Payments({
+    AmountPaid: req.body.amount_payment,
+    CustomerID: req.body.customerid_payment,
+    Month: req.body.month_payment,
+    Paid: req.body.monthlyfee,
+    PaymentH: req.body.paymenth_payment,
+    PaymentID: req.body.paidsubscription,
+    Year: req.body.year_payment,
+    realamount: req.body.realamount_payment,
+  });
+
+  const data = await paymentdata.save();
+
+  try {
+    if (!req.body) {
+      res.send({
+        status: false,
+        message: "no response",
+      });
+    } else {
+      res.send({
+        status: true,
+        message: 'OK',
+        data: data,
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+  
+  res.status(200).send({message: "Data saved successfully."});
+
+}
+
+exports.sendBuilding = async (req, res) => {
+  const buildingdata = new Buildings({
+    BldgAddress: req.body.building_address,
+    BldgID: req.body.buildingid,
+    BldgName: req.body.buildingname,
+    BldgOrder: req.body.building_order,
+    Region: req.body.region_building,
+  });
+
+  const data = await buildingdata.save();
+
+  try {
+    if (!req.body) {
+      res.send({
+        status: false,
+        message: "no response",
+      });
+    } else {
+      res.send({
+        status: true,
+        message: 'OK',
+        data: data,
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+  
+  res.status(200).send({message: "Data saved successfully."});
+
+}
+
+exports.sendCustomer = async (req, res) => {
+  const customerdata = new Customer({
+    Title: req.body.title_create,
+    Address: req.body.address_create,
+    CustomerID: req.body.customerid_create,
+    DateOfSubscription: req.body.subscription_create,
+    FirstName: req.body.firstname_create,
+    LastName: req.body.lastname_create,
+    MonthlyFee: req.body.monthlyfee_create,
+    PhoneNumber: req.body.phonenumber_create,
+    Region: req.body.region_create,
+  });
+
+  const data = await customerdata.save();
+
+  try {
+    if (!req.body) {
+      res.send({
+        status: false,
+        message: "no response",
+      });
+    } else {
+      res.send({
+        status: true,
+        message: 'OK',
+        data: data,
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+  
+  res.status(200).send({message: "Data saved successfully."});
+
+}
 
 exports.receiveReportData = async (req, res) => {
   const receivereportdata = await Report.find();

@@ -7,6 +7,7 @@ import classnames from "classnames";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router";
+import URLname from "../../common/const";
 
 const InvoiceDetails = () => {
 
@@ -34,7 +35,7 @@ const InvoiceDetails = () => {
   useEffect(() => {
     async function fetchData() {
       const id = params.id.toString();
-      const response = await fetch(`http://localhost:8080/api/test/send_report_data/${params.id.toString()}`);
+      const response = await fetch(URLname + `/api/test/send_report_data/${params.id.toString()}`);
    
 
       if (!response.ok) {

@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
+import URLname from "../../common/const";
 
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import MetaTags from 'react-meta-tags';
@@ -26,6 +27,7 @@ import { sendInvoice } from "../../store/actions";
 import { getOneInvoice } from "../../store/actions";
 import jsPDF from "jspdf";
 import QRCode from "qrcode";
+
 
 import {
 
@@ -55,13 +57,13 @@ const InvoiceCreate = () => {
     await getCustomerID();
     await getCustomerData();
     // setModal(!modal);
-    createPdf();
+    await createPdf();
   };
 
   const getCustomerID = async () => {
     const getfilters = { monthvalue, yearvalue };
     try {
-      const response = await fetch('http://localhost:8080/api/test/get_filters', {
+      const response = await fetch(URLname + '/api/test/get_filters', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -87,7 +89,7 @@ const InvoiceCreate = () => {
       const region = regionvalue.value;
       const getfilters = { customerid, region };
       try {
-        const response = await fetch('http://localhost:8080/api/test/get_customer', {
+        const response = await fetch(URLname + '/api/test/get_customer', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -224,7 +226,7 @@ const InvoiceCreate = () => {
   const initInvoice = async (data) => {
     try {
       console.log("number", data);
-      const response = await fetch('http://localhost:8080/api/test/init_invoice_data', {
+      const response = await fetch(URLname + '/api/test/init_invoice_data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -248,7 +250,7 @@ const InvoiceCreate = () => {
 
   const getInvoiceNumber = async (data) => {
     try {
-      const response = await fetch('http://localhost:8080/api/test/get_invoice_number', {
+      const response = await fetch(URLname + '/api/test/get_invoice_number', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -311,7 +313,8 @@ const InvoiceCreate = () => {
 
         const x = margin;
         const y = margin + Math.floor(j) * (invoiceHeight + margin);
-        const qrData = `عميل ${invoice.CustomerID}`
+        const qrData = `CustomerId: ${invoice.CustomerID}, Name: ${invoice.FirstName}${invoice.LastName}, Address: ${invoice.Title}, Monthlyfee:${invoice.MonthlyFee}, Date:${setdate}`;
+        // console.log(qrData);
         const qrCode = await QRCode.toDataURL(qrData)
 
         pdf.rect(x, y, invoiceWidth, invoiceHeight);
@@ -319,29 +322,29 @@ const InvoiceCreate = () => {
         pdf.setFontSize(20);
         pdf.rect(x+20, y+30, invoiceWidth-40, invoiceHeight-40);
 
-        pdf.text(`شبكة الكابل `, x+250 , y+20 );
+        pdf.text(`Cable NET`, x+250 , y+20 );
         pdf.setFontSize(14);
-        pdf.text(`مجموعة هوية الزبون : ${invoice.CustomerID} `, x + 10, y + 20);
+        pdf.text(`هوية الزبون /CustomerID : ${invoice.CustomerID} `, x + 10, y + 20);
         pdf.setFontSize(10);
 
-        pdf.text(x + 150, y + 40, `منطقة: ${invoice.Region}`);
-        pdf.text(`مبنى: ${invoice.Title}`, x + 250, y + 60);
-        pdf.text(`كمية: ${invoice.MonthlyFee}`, x + 250, y + 80);
-        pdf.text(`عميل: ${invoice.FirstName} ${invoice.LastName}`, x + 250, y + 100);
-        pdf.text(`تاريخ: ${monthvalue.value + ",   " + yearvalue.value}`, x + 250, y + 120);
+        pdf.text(x + 150, y + 40, `منطقة /Region: ${invoice.Region}`);
+        pdf.text(`مبنى/Building: ${invoice.BuildingName}`, x + 250, y + 60);
+        pdf.text(`رسوم شهرية/Monthlyfee: ${invoice.MonthlyFee}`, x + 250, y + 80);
+        pdf.text(`مشترك/Customer: ${invoice.FirstName} ${invoice.LastName}`, x + 250, y + 100);
+        pdf.text(`تاريخ /Date: ${monthvalue.value + ", " + yearvalue.value}`, x + 250, y + 120);
 
         pdf.addImage(qrCode, "JPEG", x + 30, y + 40, 100, 100);
 
         pdf.rect(x + invoiceWidth, y, codeWidth, invoiceHeight)
         pdf.setFontSize(14);
-        pdf.text(`هوية الزبون ${invoice.CustomerID}`, x + invoiceWidth + 10, y + 20);
+        pdf.text(`هوية الزبون /CustomerID : ${invoice.CustomerID}`, x + invoiceWidth + 10, y + 20);
 
         pdf.setFontSize(10);
-        pdf.text(`منطقة: ${invoice.Region}`, x + invoiceWidth +  30, y + 40);
-        pdf.text(`عميل: ${invoice.FirstName} ${invoice.LastName}`, x + invoiceWidth +30, y + 60);
-        pdf.text(`مبنى: ${invoice.Title}`, x + invoiceWidth +30, y + 80);
-        pdf.text(`تاريخ: ${monthvalue.value +",   "+ yearvalue.value}`, x + invoiceWidth +30, y + 100);
-        pdf.text(`كمية: ${invoice.MonthlyFee}`, x + invoiceWidth +30, y + 120);
+        pdf.text(`منطقة /Region: ${invoice.Region}`, x + invoiceWidth +  30, y + 40);
+        pdf.text(`مبنى /Building: ${invoice.BuildingName}`, x + invoiceWidth +30, y + 60);
+        pdf.text(`رسوم شهرية/Monthlyfee: ${invoice.MonthlyFee}`, x + invoiceWidth +30, y + 80);
+        pdf.text(`مشترك /Customer: ${invoice.FirstName} ${invoice.LastName}`, x + invoiceWidth +30, y + 100);
+        pdf.text(`تاريخ /Date: ${monthvalue.value +", "+ yearvalue.value}`, x + invoiceWidth +30, y + 120);
 
         invoiceIndex++;
       }

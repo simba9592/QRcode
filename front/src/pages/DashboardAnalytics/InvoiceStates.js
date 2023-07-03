@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import html2canvas from 'html2canvas';
 import { Link } from "react-router-dom";
 import Column from "antd/lib/table/Column";
+import URLname from "../../common/const";
 
 const InvoiceStates = ({
   history,
@@ -59,7 +60,7 @@ const InvoiceStates = ({
 
   const sendDataToServer = async (data) => {
     try {
-      const response = await fetch('http://localhost:8080/api/test/scan_data', {
+      const response = await fetch(URLname + '/api/test/scan_data', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
